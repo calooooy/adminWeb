@@ -29,7 +29,7 @@ function AdminHeader({ onLogout }) {
                         <img src={getImagePath("notif.png")} alt="Notification" style={{ width: '100%', height: '100%' }} />
                     </Badge>
                     <Badge count={10} dot>
-                        <img src={getImagePath("msg.png")} alt="Message" style={{ width: '100%', height: '100%' }} />
+                     <img src={getImagePath("msg.png")} alt="Message" style={{ width: '100%', height: '100%' }} />
                     </Badge>
                     <Badge>
                         <Dropdown overlay={<Menu>

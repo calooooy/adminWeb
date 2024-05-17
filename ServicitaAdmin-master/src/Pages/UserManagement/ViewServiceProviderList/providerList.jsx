@@ -736,37 +736,46 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
                 
   <div style={{backgroundColor: 'white', width:'100%', marginBottom: '0px', textAlign: 'center'}}>
     <div className='customerRatingLabel'>Customer Rating</div>
-    <div style={{display: 'grid', justifyItems:'center', alignItems: 'center', padding: '0px'}}>
-      <PieGraph selectedUser={selectedUser}/>
-      {selectedUser.ratingCount !== 0 && (
-        <div className='Legend' style={{display: 'flex', flexDirection: 'column', margin: '20px', width: '100%', padding: '10px', marginTop: '10px'}}>
-          <div className='up' style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', gap: '10px'}}>
-            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-              <div style={{width: '15px', height:'15px', borderRadius:'50%', backgroundColor:'#00365B', marginRight: '3px'}}></div>
-              <div>5 stars</div>
-            </div>
-            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-              <div style={{width: '15px', height:'15px', borderRadius:'50%', backgroundColor:'#004E84', marginRight: '3px'}}></div>
-              <div>4 stars</div>
-            </div>
-            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-              <div style={{width: '15px', height:'15px', borderRadius:'50%', backgroundColor:'#0070C8', marginRight: '3px'}}></div>
-              <div>3 stars</div>
-            </div>
+    <div style={{ display: 'flex', flexDirection: 'column', justifyItems: 'center', alignItems: 'center', padding: '10px' }}>
+  {selectedUser.ratingCount !== 0 ? (
+    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+      <PieGraph selectedUser={selectedUser} />
+      <div className='Legend' style={{ display: 'flex', flexDirection: 'column', margin: '20px', width: '100%', padding: '10px', marginTop: '10px' }}>
+        <div className='up' style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', gap: '10px' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: '#00365B', marginRight: '3px' }}></div>
+            <div>5 stars</div>
           </div>
-          <div className='down' style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
-            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-              <div style={{width: '15px', height:'15px', borderRadius:'50%', backgroundColor:'#76A8D5', marginRight: '3px'}}></div>
-              <div>2 stars</div>
-            </div>
-            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-              <div style={{width: '15px', height:'15px', borderRadius:'50%', backgroundColor:'#CFDBE7', marginRight: '3px'}}></div>
-              <div>1 stars</div>
-            </div>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: '#004E84', marginRight: '3px' }}></div>
+            <div>4 stars</div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: '#0070C8', marginRight: '3px' }}></div>
+            <div>3 stars</div>
           </div>
         </div>
-      )}
+        <div className='down' style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: '#76A8D5', marginRight: '3px' }}></div>
+            <div>2 stars</div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: '#CFDBE7', marginRight: '3px' }}></div>
+            <div>1 star</div>
+          </div>
+        </div>
+      </div>
     </div>
+  ) : (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '270px', height: '270px', borderRadius: '50%', backgroundColor: 'gray', margin: '10px', marginBottom:'30px'}}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '170px', height: '170px', borderRadius: '50%', backgroundColor: 'white', color: 'black', fontSize: '18px' }}>
+        This user has no rating yet
+      </div>
+    </div>
+  )}
+</div>
+
   </div>
   <div style={{backgroundColor: 'white', width:'100%', height:'300px', margin: '20px', textAlign: 'center'}}>
     <div className='customerRatingLabel'>Response Time by Weekday</div>
