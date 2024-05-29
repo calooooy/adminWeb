@@ -1,0 +1,115 @@
+@font-face {
+    font-family: 'Quicksand';
+    /* Choose a unique name for your font */
+    src: url('./fonts/Quicksand-Regular.ttf') format('truetype');
+    /* Update the file path and format */
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Quicksand-Bold';
+    /* Choose a unique name for your font */
+    src: url('./fonts/Quicksand-Bold.ttf') format('truetype');
+    /* Update the file path and format */
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Didact-Gothic';
+    src: url('./fonts/DidactGothic-Regular.ttf');
+  }
+  
+  /* Repeat the @font-face block for other font weights/styles if applicable */
+  @font-face {
+    font-family: 'GothicA1';
+    /* Choose a unique name for your font */
+    src: url('./fonts/GothicA1-Regular.ttf') format('truetype');
+    /* Update the file path and format */
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'GothicA1-Bold';
+    /* Choose a unique name for your font */
+    src: url('./fonts/GothicA1-Bold.ttf') format('truetype');
+    /* Update the file path and format */
+    font-weight: normal;
+    font-style: normal;
+  }
+
+.dbLeft {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    /* background-color: white; */
+    border-radius: 10px;
+    width: 50vw;
+    padding: 20px 0px 20px 20px;
+
+    .dbCard {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        height: 25vh;
+        min-width: 300px;
+        padding-bottom: 0px;
+        margin-bottom: 0px;
+
+        .item {
+            background-color: white;
+            flex: 1; /* Allows the items to grow and shrink evenly */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+
+            h1 {
+                text-align: center;
+                color: #266f92;
+                font-size: 60px;
+                font-family: 'GothicA1';
+                padding: 0px;
+                margin: 0px;
+            }
+
+            h2 {
+                width: 120px; /* Adjust this width to control the wrapping */
+                white-space: normal;
+                margin-top: 0px;
+                font-family: 'Didact-Gothic';
+                font-size: 25px;
+                color: black;
+                text-align: center;
+                margin-bottom: 5px;
+            }
+        }
+    }
+    
+    .dbGraph {
+        background-color: white;
+        height: 40vh;
+        border-radius: 10px;
+        width: 50vw;
+        min-width: 500px;
+    }
+}
+
+.dbRight {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    /* background-color: white; */
+    border-radius: 10px;
+    width: 33vw;
+    padding: 20px;
+}
+
+
+

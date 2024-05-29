@@ -71,15 +71,19 @@ function ViewServiceProviderList() {
   return (
     <div style={{ width: '100%' }}>
       <h1 className='DashboardHeader'>View Service Provider List</h1>
-      <hr className='Divider' style={{ width: '1185px' }} />
+      <hr className='Divider' style={{ width: '100%' }} />
+
+      {/* <div className='message-container'> */}
       {!isUserSelected && ( // Render the SearchBar only if a user is not selected
-        <div style={{ width: '1150px' }}>
+        <div style={{ width: '75vw' }}>
           <SearchBar onSearch={handleSearch} onSort={handleSort} findByCategory={handleCategory} findByCity={handleCity} findByBarangay={handleBarangay} findByFlag={handleFlagged} savedSearchTermm={savedSearchTerm} savedCategoryy={savedCategory} savedCityy={savedCity} savedBarangayy={savedBarangay} savedFlaggedd={savedFlagged} />
         </div>
       )}
       <div>
         <ProviderList searchTerm={searchTerm} sortTerm={sortTerm} category={category} city={city} barangay={barangay} flagged={flagged} onSelectUser={handleUserSelect} toggleSearchBarVisibility={setIsUserSelected} />
       </div>
+      {/* </div> */}
+
     </div>
   );
 }

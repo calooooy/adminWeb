@@ -31,6 +31,18 @@ function InProgressComplaints() {
 					const reporterResponse = await Axios.get(`http://172.16.4.26:5000/admin/getUser/${report.reporterId}`); //for reporter profileImage
 					const reportedResponse = await Axios.get(`http://172.16.4.26:5000/admin/getUser/${report.reportedId}`); //for reported role
 
+					// console.log("dirig laay")
+					// console.log(reportedResponse.data.data.suspension.isSuspended)
+
+					const reporterSuspended = reporterResponse.data.data.suspension.isSuspended
+					const reportedSuspended = reportedResponse.data.data.suspension.isSuspended
+
+					const reporterEmail = reporterResponse.data.data.email;
+					const reportedEmail = reportedResponse.data.data.email;
+
+
+					console.log("Reporter:" + reporterEmail);
+					console.log("Reported:" + reportedEmail);
 
 
 					const db = getFirestore();
@@ -52,16 +64,26 @@ function InProgressComplaints() {
 					const reporterData = reporterDoc.data();
 					const reportedData = reportedDoc.data();
 
+					console.log()
+
 					reportInfoData.push({
 						id: report._id,
+
 						reporterId: report.reporterId,
 						reporterName: `${reporterData.name.firstName} ${reporterData.name.lastName}`,
+						reporterRole: reporterRole,
 						reporterProfileImage: reporterProfileImage,
-						reportedProfileImage: reportedProfileImage,
+						reporterSuspended: reporterSuspended,
+						reporterEmail: reporterEmail,
+
+
 						reportedId: report.reportedId,
 						reportedName: `${reportedData.name.firstName} ${reportedData.name.lastName}`,
 						reportedRole: reportedRole,
-						reporterRole: reporterRole,
+						reportedProfileImage: reportedProfileImage,
+						reportedSuspended: reportedSuspended,
+						reportedEmail: reportedEmail,
+
 						reason: report.reason,
 						createdAt: new Date(report.createdAt), // Assuming createdAt is already a Date in MongoDB
 						status: report.status
@@ -222,6 +244,45 @@ function InProgressComplaints() {
 		}
 	}
 
+	const handleUnsuspendReporter = (record) => {
+		try {
+		  const userData = {
+			email: record.reporterEmail
+		  }
+		  Axios.patch('http://172.16.4.26:5000/admin/unsuspendUser', userData)
+			.then((response) => {
+			  alert('User unsuspended successfully');
+			  setUnsuspendUser(true);
+			})
+			.catch((error) => {
+			  console.error('Error unsuspending user: ', error);
+			});
+			setChanges(true)
+			setLoading(true)
+		} catch (error) {
+		  console.error('Error unsuspending user: ', error);
+		}
+	  }
+
+	const handleUnsuspendReported = (record) => {
+		try {
+		  const userData = {
+			email: record.reportedEmail
+		  }
+		  Axios.patch('http://172.16.4.26:5000/admin/unsuspendUser', userData)
+			.then((response) => {
+			  alert('User unsuspended successfully');
+			  setUnsuspendUser(true);
+			})
+			.catch((error) => {
+			  console.error('Error unsuspending user: ', error);
+			});
+			setChanges(true)
+			setLoading(true)
+		} catch (error) {
+		  console.error('Error unsuspending user: ', error);
+		}
+	  }
 
 	const renderActions = (record) => {
 		if (!record) {
@@ -236,17 +297,37 @@ function InProgressComplaints() {
 					<Menu.Item key="message_reporter" onClick={() => handleMessage(record, 'reporter')}>Reporter</Menu.Item>
 					<Menu.Item key="message_reported" onClick={() => handleMessage(record, 'reported')}>Reported</Menu.Item>
 				</Menu.SubMenu>
-		
-                <Menu.SubMenu key="suspend" title="Suspend">
-                    <Menu.SubMenu key="suspend_reporter" title="Reporter">
-                        <Menu.Item key="reporter_5_hours" onClick={() => handleSubMenuClick(record, 5, 'reporter')}>5 hours</Menu.Item>
+
+				{/* <Menu.SubMenu key="user" title="User">
+					<Menu.Submenu key="user_reporter" title="Reporter">
+						<Menu.Item key="reporter_5_hours" onClick={() => handleSubMenuClick(record, 5, 'reporter')}>5 hours</Menu.Item>
                         <Menu.Item key="reporter_1_day" onClick={() => handleSubMenuClick(record, 24, 'reporter')}>1 day</Menu.Item>
                         <Menu.Item key="reporter_1_week" onClick={() => handleSubMenuClick(record, 168, 'reporter')}>1 week</Menu.Item>
+					</Menu.Submenu>
+					<Menu.Submenu key="user_reported" title="Reporter">
+						<Menu.Item key="reporter_5_hours" onClick={() => handleSubMenuClick(record, 5, 'reporter')}>5 hours</Menu.Item>
+                        <Menu.Item key="reporter_1_day" onClick={() => handleSubMenuClick(record, 24, 'reporter')}>1 day</Menu.Item>
+                        <Menu.Item key="reporter_1_week" onClick={() => handleSubMenuClick(record, 168, 'reporter')}>1 week</Menu.Item>
+					</Menu.Submenu>
+				</Menu.SubMenu> */}
+		
+                <Menu.SubMenu key="user" title="User">
+                    <Menu.SubMenu key="suspend_reporter" title="Reporter">
+						{record.reporterSuspended === true ? <Menu.Item key="unsuspend" onClick={() => handleUnsuspendReporter(record)}>Unsuspend</Menu.Item> : <Menu.SubMenu title="Suspend">
+                        	<Menu.Item key="reporter_5_hours" onClick={() => handleSubMenuClick(record, 5, 'reporter')}>5 hours</Menu.Item>
+                        	<Menu.Item key="reporter_1_day" onClick={() => handleSubMenuClick(record, 24, 'reporter')}>1 day</Menu.Item>
+                        	<Menu.Item key="reporter_1_week" onClick={() => handleSubMenuClick(record, 168, 'reporter')}>1 week</Menu.Item>
+						</Menu.SubMenu>
+			}
                     </Menu.SubMenu>
+			
                     <Menu.SubMenu key="suspend_reported" title="Reported">
-                        <Menu.Item key="reported_5_hours" onClick={() => handleSubMenuClick(record, 5, 'reported')}>5 hours</Menu.Item>
-                        <Menu.Item key="reported_1_day" onClick={() => handleSubMenuClick(record, 24, 'reported')}>1 day</Menu.Item>
-                        <Menu.Item key="reported_1_week" onClick={() => handleSubMenuClick(record, 168, 'reported')}>1 week</Menu.Item>
+					{record.reportedSuspended === true ? <Menu.Item key="unsuspend" onClick={() => handleUnsuspendReported(record)}>Unsuspend</Menu.Item> : <Menu.SubMenu title="Suspend">
+                        	<Menu.Item key="reporter_5_hours" onClick={() => handleSubMenuClick(record, 5, 'reporter')}>5 hours</Menu.Item>
+                        	<Menu.Item key="reporter_1_day" onClick={() => handleSubMenuClick(record, 24, 'reporter')}>1 day</Menu.Item>
+                        	<Menu.Item key="reporter_1_week" onClick={() => handleSubMenuClick(record, 168, 'reporter')}>1 week</Menu.Item>
+						</Menu.SubMenu>
+			}
                     </Menu.SubMenu>
                 </Menu.SubMenu>
                 <Menu.Item key="resolve" onClick={() => handleResolve(record)}>Resolve</Menu.Item>

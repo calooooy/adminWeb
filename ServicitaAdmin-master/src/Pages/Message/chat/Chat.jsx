@@ -2,6 +2,7 @@ import "./chat.css";
 import { useState, useEffect, useRef } from "react";
 import { getFirestore, collection, getDocs, onSnapshot, doc, deleteDoc, getDoc, setDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { set } from "firebase/database";
 
 const Chat = ( {message} ) => {
 
@@ -22,7 +23,7 @@ const Chat = ( {message} ) => {
 			setLoading(false);
 			return;
 		}
-
+		setLoading(true);
 		const db = getFirestore();
 		const messagesCollection = collection(db, 'adminChats');
 		const q = doc(messagesCollection, message.id);
@@ -97,15 +98,30 @@ const Chat = ( {message} ) => {
 			const data = response.data();
 			const messages = data.messages;
 
-			const newMessage = {
-				_id: `${message.id}_${new Date().getTime()}_${message.usersId.admin}`,
-				user: {
-					_id: message.usersId.admin,
-				},
-				image: imgUrl,
-				createdAt: new Date(),
-				text: '',
-			};
+			// check if it is video or image
+
+			let newMessage = null;
+
+			if (file.type.includes('image')) {
+				newMessage = {
+					_id: `${message.id}_${new Date().getTime()}_${message.usersId.admin}`,
+					user: {
+						_id: message.usersId.admin,
+					},
+					image: imgUrl,
+					createdAt: new Date(),
+				};
+			} else if (file.type.includes('video')) {
+				newMessage = {
+					_id: `${message.id}_${new Date().getTime()}_${message.usersId.admin}`,
+					user: {
+						_id: message.usersId.admin,
+					},
+					video: imgUrl,
+					createdAt: new Date(),
+				};
+			}
+				
 
 			const newMessages = [...messages, newMessage];
 
@@ -245,10 +261,9 @@ const Chat = ( {message} ) => {
 			            {msg.user._id !== message.usersId.admin && <img style={{width: '40px', height:'40px', borderRadius:'50%'}} src={message.usersImage.user} alt="Avatar" />}
 
 			            {msg.video ? (
-				            <div className="video-container">
+				            <div className="video-text-container">
                                 <div className={`video ${msg.user._id === message.usersId.admin ? 'own' : ''}`}>
-                                    <video controls>
-						                <source src={msg.video} type="video/mp4" />
+                                    <video src={msg.video} type="video/mp4/" controls>
 						                Your browser does not support the video tag.
 					                </video>
                                 </div>
@@ -281,7 +296,7 @@ const Chat = ( {message} ) => {
 			<label htmlFor="file" style={{width:'auto', padding:'0px', paddingTop:'0px', margin:'0px', marginTop:'3px'}}>
 			    <img src="../message_assets/img.png" alt="" />
 			</label>
-			<input type="file" id="file" accept="image/*" onChange={handleImg} style={{ display: 'none' }} />
+			<input type="file" id="file" accept="image/*,video/*" style={{display:'none'}} onChange={handleImg} />
 		</div>
 
 		<input

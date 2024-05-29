@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../Admin.css';
+import '../Dashboard/dashboard.css'
 import { Space, Table } from 'antd';
 import './../../firebase';
 import { getFirestore, addDoc, collection, getDocs, onSnapshot } from 'firebase/firestore';
@@ -81,15 +82,49 @@ function Dashboard() {
 	return (
 		<div style={{ width: '100%' }}>
 			<h1 className='DashboardHeader'>Dashboard</h1>
-			<hr className='Divider' style={{ width: '100%' }} />
-			<div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+			<hr className='Divider' style={{ width: '100%'}} />
+
+		   <div className='message-container'>
+				<div className='dbLeft'>
+					<div className='dbCard'>
+						<div className='item'>
+							<h2>Service Seekers</h2>
+							<h1>{seekerCount}</h1>
+						</div>
+						<div className='item'>
+							<h2>Service Providers</h2>
+							<h1>{providerCount}</h1>
+						</div>
+						<div className='item'>
+							<h2>Completed Services</h2>
+							<h1>{completedServicesCount}</h1>
+						</div>
+					</div>
+					<div className='dbGraph'>
+						<DashboardChart />
+						{/* <div style={{backgroundColor:'white', width: '100%', height:'300px'}}>
+							<DashboardChart />
+						</div> */}
+					</div>
+				</div>
+				<div className='dbRight'>
+				<div style={{alignItems:'center', justifyContent: 'center', padding: '0px 0px 0px 0px'}}>
+						
+							<div className='TopPerforming'>
+								<TopPerforming />
+							</div>
+						
+					</div>
+				</div>
+
+			{/* <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
 				<div style={{padding: '20px', display: 'flex', flexDirection: 'column'}}>
 					<Space direction="horizontal" style={{marginBottom: '20px', width: '685px', justifyContent: 'space-between'}}>
 						<DashboardCard title={"Service Seekers"} value={seekerCount}></DashboardCard>
 						<DashboardCard title={"Service Providers"} value={providerCount}></DashboardCard>
 						<DashboardCard title={"Completed Service "} value={completedServiceCount}></DashboardCard>
 					</Space>
-					<div style={{backgroundColor:'white', width: '685px', height:'360px'}}>
+					<div style={{backgroundColor:'white', width: '100%', height:'300px'}}>
 						<DashboardChart />
 						</div>
 				</div>
@@ -100,8 +135,9 @@ function Dashboard() {
 							</div>
 						</Space>
 					</div>
-						</div>
-						</div>
+			</div> */}
+		   </div>
+		</div>
 	);
 }
 
@@ -186,16 +222,16 @@ function TopPerforming() {
 	}, []);
 
 	const renderImage = (url) => (
-		<div style={{ width: 50, height: 50, borderRadius: '50%', overflow: 'hidden' }}>
+		<div style={{ width: 50, height: 50, borderRadius: '50%', overflow: 'hidden', display:'flex', justifyContent:'center', alignItems:'center' }}>
 			<img src={url} alt="User" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
 		</div>
 	);
 
 	return (
 		<div>
-			<h1 className="topPerformingTableTitle">Top Performing Service Providers</h1>
+			<div className="topPerformingTableTitle">Top Performing Providers</div>
 			<Table
-				style={{ width: '100%', marginLeft: '0px' }}
+				style={{ width: '100%'}}
 				components={{
 					body: {
 						cell: ({ children }) => <td>{children}</td>
@@ -217,12 +253,12 @@ function TopPerforming() {
 					{
 						dataIndex: "profileImage",
 						render: renderImage,
-						width: '50px'
+						align: 'center',
 					},
 					{
 						dataIndex: "fullName",
 						render: (text, record) => (
-							<span style={{ textAlign: 'left', fontSize: '20px' }}>{text}</span>
+							<span style={{ textAlign: 'center', fontSize: '15px' }}>{text}</span>
 						)
 					}
 				]}
@@ -263,6 +299,7 @@ import {
 
     const options = {
         responsive: true,
+		maintainAspectRatio: false,
         plugins: {
             legend: {
                 display: false,
@@ -308,67 +345,4 @@ import {
 /* END OF FOR GRAPH */
 
 export default Dashboard;
-
-
-/* FOR GRAPH */
-
-// import {
-// 	Chart as ChartJS,
-// 	CategoryScale,
-// 	LinearScale,
-// 	PointElement,
-// 	LineElement,
-// 	Title,
-// 	Tooltip,
-// 	Filler,
-// 	Legend,
-// 	} from 'chart.js';
-// 	import { Line } from 'react-chartjs-2';
-
-// 	ChartJS.register(
-// 		CategoryScale,
-// 		LinearScale,
-// 		PointElement,
-// 		LineElement,
-// 		Title,
-// 		Tooltip,
-// 		Filler,
-// 		Legend
-// 	);
-
-
-// 	function DashboardChart() {
-// 		const options = {
-// 			responsive: true,
-// 			plugins: {
-// 				legend: {
-// 					position: 'bottom',
-// 				},
-// 				title: {
-// 					display: true,
-// 					text: 'Sales Report',
-// 				},
-// 			},
-// 			};
-
-// 				const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-// 		const data = {
-// 			labels,
-// 			datasets: [
-// 				{
-// 					fill: true,
-// 					label: 'Monthly Sales Report',
-// 					data: labels.map(() => Math.random()*1000),
-// 					borderColor: 'rgb(53, 162, 235)',
-// 					backgroundColor: 'rgba(53, 162, 235, 0.5)',
-// 				},
-// 			],
-// 			};
-
-// 		return <Line options={options} data={data} />;
-// 	}
-
-// /* END OF FOR GRAPH */
-
 

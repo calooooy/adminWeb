@@ -409,7 +409,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
 
   const renderName = (text, record) => (
     <span
-      style={{ textAlign: 'left', fontSize: '20px', cursor: 'pointer' }}
+      style={{ textAlign: 'left', fontSize: '20', cursor: 'pointer' }}
       onClick={() => handleItemClick(record)}
       onMouseEnter={(e) => { e.target.style.textDecoration = 'underline'; e.target.style.color = '#75B9D9'; }} // Underline on hover
       onMouseLeave={(e) => { e.target.style.textDecoration = 'none'; e.target.style.color = 'black'; }} // Remove underline when not hovered
@@ -429,7 +429,8 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
         style={{
           textAlign: 'center',
           textDecoration: 'none', // Remove underline by default
-          color: 'inherit' // Use the default text color
+          color: 'inherit', // Use the default text color
+          fontSize: '20rm',
         }}
         onMouseEnter={(e) => { e.target.style.textDecoration = 'underline'; e.target.style.color = '#75B9D9'; }} // Underline on hover
         onMouseLeave={(e) => { e.target.style.textDecoration = 'none'; e.target.style.color = 'black'; }} // Remove underline when not hovered
@@ -452,7 +453,8 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
           style={{
             textAlign: 'center',
             textDecoration: 'none', // Remove underline by default
-            color: 'inherit' // Use the default text color
+            color: 'inherit', // Use the default text color
+            fontSize: '20rm',
           }}
           onMouseEnter={(e) => { e.target.style.textDecoration = 'underline'; e.target.style.color = '#75B9D9'; }} // Underline on hover
           onMouseLeave={(e) => { e.target.style.textDecoration = 'none'; e.target.style.color = 'black'; }} // Remove underline when not hovered
@@ -470,7 +472,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       style={{ display: 'flex', justifyContent: 'center', cursor: 'pointer' }}
       onClick={() => handleItemClick(record)}
     >
-      <div style={{ width: 200, height: 35, backgroundColor: '#CFDFE7', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div style={{ width: 'auto', height: 35, backgroundColor: '#CFDFE7', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <span style={{ textAlign: 'center' }}>{"Completed Services: " + text}</span>
       </div>
     </div>
@@ -481,7 +483,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       style={{ display: 'flex', justifyContent: 'center', cursor: 'pointer' }}
       onClick={() => handleItemClick(record)}
     >
-      <div style={{ width: 200, height: 35, backgroundColor: '#CFDFE7', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div style={{ width: 'auto', height: 35, backgroundColor: '#CFDFE7', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <span style={{ textAlign: 'center' }}>{"Rating: " + text}</span>
       </div>
     </div>
@@ -497,7 +499,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       }}
       onClick={() => handleItemClick(record)}
     >
-      <div style={{ width: 50, height: 50, borderRadius: '50%', overflow: 'hidden' }}>
+      <div style={{ width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden' }}>
         <img src={url} alt="User" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
       </div>
     </div>
@@ -574,8 +576,6 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
         console.error("Error deleting user: ", error);
       });
   };
-
-
 
 
   const handleUnsuspend = (record) => {
@@ -770,7 +770,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
   ) : (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '270px', height: '270px', borderRadius: '50%', backgroundColor: 'gray', margin: '10px', marginBottom:'30px'}}>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '170px', height: '170px', borderRadius: '50%', backgroundColor: 'white', color: 'black', fontSize: '18px' }}>
-        This user has no rating yet
+        No rating yet
       </div>
     </div>
   )}
@@ -794,7 +794,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       {!selectedUser && (
         <div className="scrollable-table">
           <Table
-            style={{ width: '100%' }}
+            style={{ width: '75vw' }}
             components={{
               body: {
                 cell: ({ children }) => <td>{children}</td>
@@ -805,32 +805,37 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
               {
                 dataIndex: "profileImage",
                 render: (url, record) => renderImage(url, record),
-                width: '100px',
+                width: '10%',
               },
               {
                 dataIndex: "fullName",
-                render: (text, record) => renderName(text, record)
+                render: (text, record) => renderName(text, record),
+                width: '20%',
               },
               {
                 dataIndex: "email",
-                render: (text, record) => renderEmail(text, record)
+                render: (text, record) => renderEmail(text, record),
+                width: '20%',
               },
               {
                 dataIndex: "phone",
-                render: (text, record) => renderMobile(text, record)
+                render: (text, record) => renderMobile(text, record),
+                width: '15%',
               },
               {
                 dataIndex: "completedServices",
-                render: (text, record) => renderCompletedServices(text, record)
+                render: (text, record) => renderCompletedServices(text, record),
+                width: '15%',
               },
               {
                 dataIndex: "rating",
-                render: (text, record) => renderRating(text, record)
+                render: (text, record) => renderRating(text, record),
+                width: '15%',
               },
               {
                 dataIndex: 'actions',
                 render: renderActions,
-                width: '50px',
+                width: '5%',
               }
             ]}
             loading={loading}

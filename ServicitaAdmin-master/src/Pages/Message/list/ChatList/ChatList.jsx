@@ -9,17 +9,25 @@ const ChatList = ({ setActiveMessage }) => {
     const [filteredMessages, setFilteredMessages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
+    const [active, setActive] = useState({});
 
     const handleChatClick = (message) => {
-        setSearchQuery("");
+        setLoading(true);
         setActiveMessage(message);
-        setFilteredMessages(messages);
-        const newMessages = messages.map((msg) => ({
-            ...msg,
-            selected: msg.id === message.id,
-        }));
-        setMessages(newMessages);
+        setActive(message);
+    
+        setMessages(prevMessages => {
+            const newMessages = prevMessages.map((msg) => ({
+                ...msg,
+                selected: msg.id === message.id,
+            }));
+            setFilteredMessages(newMessages);
+            return newMessages;
+        });
+    
+        setLoading(false);
     };
+    
 
     const handleSearchChange = (e) => {
         const query = e.target.value.toLowerCase();
@@ -44,7 +52,7 @@ const ChatList = ({ setActiveMessage }) => {
                     const timeB = b.lastMessageTime instanceof Date ? b.lastMessageTime : b.lastMessageTime.toDate();
                     return timeB - timeA;
                 });
-                
+                setActive(sortedChat[0]);
                 setActiveMessage(sortedChat[0]);
                 const updatedMessages = sortedChat.map((msg, index) => ({
                     ...msg,
