@@ -11,6 +11,17 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
   const [deletedUser, setDeletedUser] = useState(false);
   const [unsuspendUser, setUnsuspendUser] = useState(false);
 
+  const [width, setWidth] = useState(window.innerWidth);
+
+  const updateWidth = () => {
+    setWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+
   useEffect(() => {
     setLoading(true);
     const db = getFirestore();
@@ -158,7 +169,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
 
   const renderName = (text, record) => (
     <span
-      style={{ textAlign: 'left', fontSize: '20px', cursor: 'pointer' }}
+      style={{ textAlign: 'left', fontSize: '18px', cursor: 'pointer' }}
       onClick={() => handleItemClick(record)}
       onMouseEnter={(e) => { e.target.style.textDecoration = 'underline'; e.target.style.color = '#75B9D9'; }} // Underline on hover
       onMouseLeave={(e) => { e.target.style.textDecoration = 'none'; e.target.style.color = 'black'; }} // Remove underline when not hovered
@@ -217,22 +228,69 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
       style={{ display: 'flex', justifyContent: 'center', cursor: 'pointer' }}
       onClick={() => handleItemClick(record)}
     >
-      <div style={{ width: 200, height: 35, backgroundColor: '#CFDFE7', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <span style={{ textAlign: 'center' }}>{"Services Availed: " + text}</span>
-      </div>
+      <span
+        style={{
+          textAlign: 'center',
+          textDecoration: 'none', // Remove underline by default
+          color: 'inherit', // Use the default text color
+          fontSize: '15px',
+          whiteSpace: 'normal', // Allow text to wrap
+          wordWrap: 'break-word', // Break long words
+        }}
+        onMouseEnter={(e) => { e.target.style.textDecoration = 'underline'; e.target.style.color = '#75B9D9'; }} // Underline on hover
+        onMouseLeave={(e) => { e.target.style.textDecoration = 'none'; e.target.style.color = 'black'; }} // Remove underline when not hovered
+        onClick={(e) => e.preventDefault()} // Prevent default click behavior
+      >
+        {"Services Availed: " + text}
+      </span>
     </div>
   );
-
+  
   const renderReportsReceived = (text, record) => (
     <div
       style={{ display: 'flex', justifyContent: 'center', cursor: 'pointer' }}
       onClick={() => handleItemClick(record)}
     >
-      <div style={{ width: 200, height: 35, backgroundColor: '#CFDFE7', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <span style={{ textAlign: 'center' }}>{"Reports Received: " + text}</span>
-      </div>
+      <span
+        style={{
+          textAlign: 'center',
+          textDecoration: 'none', // Remove underline by default
+          color: 'inherit', // Use the default text color
+          fontSize: '15px',
+          whiteSpace: 'normal', // Allow text to wrap
+          wordWrap: 'break-word', // Break long words
+        }}
+        onMouseEnter={(e) => { e.target.style.textDecoration = 'underline'; e.target.style.color = '#75B9D9'; }} // Underline on hover
+        onMouseLeave={(e) => { e.target.style.textDecoration = 'none'; e.target.style.color = 'black'; }} // Remove underline when not hovered
+        onClick={(e) => e.preventDefault()} // Prevent default click behavior
+      >
+        {"Reports Received: " + text}
+      </span>
     </div>
   );
+  
+
+  // const renderServicesAvailed = (text, record) => (
+  //   <div
+  //     style={{ display: 'flex', justifyContent: 'center', cursor: 'pointer' }}
+  //     onClick={() => handleItemClick(record)}
+  //   >
+  //     {/* <div style={{ width: 200, height: 35, backgroundColor: '#CFDFE7', display: 'flex', justifyContent: 'center', alignItems: 'center' }}> */}
+  //       <span style={{ textAlign: 'center' }}>{"Services Availed: " + text}</span>
+  //     {/* </div> */}
+  //   </div>
+  // );
+
+  // const renderReportsReceived = (text, record) => (
+  //   <div
+  //     style={{ display: 'flex', justifyContent: 'center', cursor: 'pointer' }}
+  //     onClick={() => handleItemClick(record)}
+  //   >
+  //     {/* <div style={{ width: 200, height: 35, backgroundColor: '#CFDFE7', display: 'flex', justifyContent: 'center', alignItems: 'center' }}> */}
+  //       <span style={{ textAlign: 'center' }}>{"Reports Received: " + text}</span>
+  //     {/* </div> */}
+  //   </div>
+  // );
 
   const renderImage = (url, record) => (
     <div
@@ -243,7 +301,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
       }}
       onClick={() => handleItemClick(record)}
     >
-      <div style={{ width: 50, height: 50, borderRadius: '50%', overflow: 'hidden' }}>
+      <div style={{ width: 50, height: 50, borderRadius: '50%', overflow: 'hidden', border: '2px solid #75B9D9' }}>
         <img src={url} alt="User" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
       </div>
     </div>
@@ -449,7 +507,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
       )}
 
       {!selectedUser && (
-        <div className="scrollable-table">
+        <div className="scrollable-table" style={{ overflowX: 'auto' }}>
           <Table
             style={{ width: '100%' }}
             components={{
@@ -462,37 +520,43 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
               {
                 dataIndex: "profileImage",
                 render: (url, record) => renderImage(url, record),
-                width: '100px',
+                width: width < 768 ? '15%' : '10%',
               },
               {
                 dataIndex: "fullName",
-                render: (text, record) => renderName(text, record)
+                render: (text, record) => renderName(text, record),
+                width: width < 768 ? '25%' : '20%',
               },
-              {
-                dataIndex: "email",
-                render: (text, record) => renderEmail(text, record)
-              },
+              // {
+              //   dataIndex: "email",
+              //   render: (text, record) => renderEmail(text, record),
+              //   width: width < 768 ? '25%' : '20%',
+              // },
               {
                 dataIndex: "phone",
-                render: (text, record) => renderMobile(text, record)
+                render: (text, record) => renderMobile(text, record),
+                width: width < 768 ? '20%' : '20%',
               },
               {
                 dataIndex: "servicesAvailed",
-                render: (text, record) => renderServicesAvailed(text, record)
+                render: (text, record) => renderServicesAvailed(text, record),
+                width: width < 768 ? '20%' : '20%',
               },
               {
                 dataIndex: "reportsReceived",
-                render: (text, record) => renderReportsReceived(text, record)
+                render: (text, record) => renderReportsReceived(text, record),
+                width: width < 768 ? '20%' : '20%',
               },
               {
                 dataIndex: 'actions',
                 render: renderActions,
-                width: '50px',
+                width: '5%',
               }
             ]}
             loading={loading}
             dataSource={filteredDataBySort}
             pagination={false}
+            showHeader={false}
           />
         </div>
       )}

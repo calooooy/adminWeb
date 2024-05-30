@@ -9,7 +9,10 @@ import {
   FileAddOutlined,
   StarOutlined,
   FrownOutlined,
-  MessageOutlined
+  MessageOutlined,
+  IssuesCloseOutlined,
+  ClockCircleOutlined,
+  MonitorOutlined
 } from '@ant-design/icons';
 import { useEffect, useState } from "react";
 
@@ -53,9 +56,9 @@ function SideMenu() {
             { label: "New Service Listing", icon: <FileAddOutlined style={{ fontSize: '20px' }} />, key: "/home/newServiceListing" },
             // { label: "Ratings and Reviews", icon: <StarOutlined style={{ fontSize: '20px' }} />, key: "/home/ratingsAndReviews" },
             { label: "Review Complaints", icon: <FrownOutlined style={{ fontSize: '20px' }} />, key: "/home/reviewComplaints", children: [
-              { label: "Pending Complaints", key: "/home/reviewComplaints/pendingComplaints" },
-              { label: "In Progress Complaints", key: "/home/reviewComplaints/inProgressComplaints"},
-              { label: "Resolved Complaints", key: "/home/reviewComplaints/resolvedComplaints"}
+              { label: "Pending Complaints", icon: <ClockCircleOutlined style={{ fontSize: '20px' }}/>, key: "/home/reviewComplaints/pendingComplaints" },
+              { label: "In Progress Complaints", icon: <MonitorOutlined style={{ fontSize: '20px' }}/>, key: "/home/reviewComplaints/inProgressComplaints"},
+              { label: "Resolved Complaints", icon: <IssuesCloseOutlined style={{ fontSize: '20px' }}/>, key: "/home/reviewComplaints/resolvedComplaints"}
             ]}
           ]
         }

@@ -31,7 +31,7 @@
   body {
     background: linear-gradient(115deg, #011823, #7bc1e1); /* Replace with your gradient colors and angle */
     margin: 0;
-    min-width: 67vw;
+    width: 100vw;
   }
   
   

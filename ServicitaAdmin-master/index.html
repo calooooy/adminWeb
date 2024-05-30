@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -5,9 +6,55 @@
     <link rel="icon" type="image/png" href="/servicita-logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Servicita Admin</title>
+    <style>
+      body {
+          padding: 20px;
+          box-sizing: border-box;
+      }
+      #resize-warning {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          background-color: red;
+          color: white;
+          text-align: center;
+          padding: 10px;
+          font-weight: bold;
+          z-index: 1000;
+      }
+  </style>
+  <script>
+      function checkMinWidth() {
+          const minWidth = window.screen.width * 0.67; // 67% of the screen width
+          const warningElement = document.getElementById('resize-warning');
+
+          if (window.innerWidth < minWidth) {
+              warningElement.style.display = 'block';
+          } else {
+              warningElement.style.display = 'none';
+          }
+      }
+
+      // Check the window width when the page loads
+      // window.addEventListener('load', checkMinWidth);
+
+      // Check the window width whenever the window is resized
+      // window.addEventListener('resize', checkMinWidth);
+  </script>
   </head>
   <body>
+    <div id="resize-warning">The window width is too small! Please resize it to at least 67% of your screen width.</div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
+
+
+
+
+
+
+
+        <!-- <div style={{ width: '20vw', maxWidth: '300px', maxHeight: '50vh', overflowY: 'auto' }}> -->

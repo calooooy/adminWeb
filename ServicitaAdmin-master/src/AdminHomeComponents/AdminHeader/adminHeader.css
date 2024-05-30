@@ -3,3 +3,21 @@
     cursor: pointer;
 }
 
+.notifbadge {
+    margin: -5px;
+    
+    background-color: white;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.notifbadge:hover {
+    background-color: #ebebeb; /* Change this to your desired hover background color */
+    transform: scale(1.1); /* Slightly enlarge the icon on hover */
+}
+

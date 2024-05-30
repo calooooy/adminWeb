@@ -30,8 +30,6 @@ function PendingComplaints() {
 					const reporterResponse = await Axios.get(`http://172.16.4.26:5000/admin/getUser/${report.reporterId}`); //for reporter profileImage
 					const reportedResponse = await Axios.get(`http://172.16.4.26:5000/admin/getUser/${report.reportedId}`); //for reported role
 
-
-
 					const db = getFirestore();
 
 					const reporterProfileImage = reporterResponse.data.data.profileImage
@@ -55,8 +53,8 @@ function PendingComplaints() {
 					const reporterData = reporterDoc.data();
 					const reportedData = reportedDoc.data();
 
-					console.log(reporterData)
-					console.log(reportedData)
+					// console.log(reporterData)
+					// console.log(reportedData)
 
 
 					reportInfoData.push({
@@ -136,8 +134,6 @@ function PendingComplaints() {
 	}
 
 	const handleTakeAction = async (record) => {
-		console.log("For Take Action")
-		console.log(record.reason)
 		setUpdating(true)
 
 		try{

@@ -31,19 +31,11 @@ function InProgressComplaints() {
 					const reporterResponse = await Axios.get(`http://172.16.4.26:5000/admin/getUser/${report.reporterId}`); //for reporter profileImage
 					const reportedResponse = await Axios.get(`http://172.16.4.26:5000/admin/getUser/${report.reportedId}`); //for reported role
 
-					// console.log("dirig laay")
-					// console.log(reportedResponse.data.data.suspension.isSuspended)
-
 					const reporterSuspended = reporterResponse.data.data.suspension.isSuspended
 					const reportedSuspended = reportedResponse.data.data.suspension.isSuspended
 
 					const reporterEmail = reporterResponse.data.data.email;
 					const reportedEmail = reportedResponse.data.data.email;
-
-
-					console.log("Reporter:" + reporterEmail);
-					console.log("Reported:" + reportedEmail);
-
 
 					const db = getFirestore();
 
@@ -97,8 +89,9 @@ function InProgressComplaints() {
 
 
 				setDataSource(reportInfoData);
-	
+				setLoading(false);
 				setChanges(false)
+
 
 				// Show spinner for 2 seconds
 				setTimeout(() => {
@@ -122,23 +115,6 @@ function InProgressComplaints() {
 		}
 	}))
 
-	// const handleIgnore = async (record) => {
-	// 	console.log(record.id)
-	// 	setUpdating(true)
-
-	// 	try{
-	// 		await Axios.delete(`http://172.16.4.26:5000/report/deleteReport/${record.id}`)
-	// 		setChanges(true)
-	// 		setLoading(true)
-	// 	} catch (error) {
-	// 		console.error("Error:", error)
-	// 	} finally {
-	// 		setTimeout(() => {
-	// 			setUpdating(false); // Set updating/loading state to false after a delay
-	// 		}, 1200);
-	// 	}
-
-	// }
 
 	const handleMessage = async (record, type) => {
 		const adminId = localStorage.getItem('adminId');

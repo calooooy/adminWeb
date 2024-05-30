@@ -69,7 +69,9 @@ function ViewServiceSeekerList() {
   return (
     <div style={{ width: '100%' }}>
       <h1 className='DashboardHeader'>View Service Seeker List</h1>
-      <hr className='Divider' style={{ width: '1185px' }} />
+
+      <div className='message-container' style={{display: 'flex', flexDirection: 'column'}}>
+
       {!isUserSelected && ( // Render the SearchBar only if a user is not selected
         <div style={{ width: '1150px' }}>
           <SearchBar onSearch={handleSearch} onSort={handleSort} findByCity={handleCity} findByBarangay={handleBarangay} findByFlag={handleFlagged} savedSearchTermm={savedSearchTerm} savedCityy={savedCity} savedBarangayy={savedBarangay} savedFlaggedd={savedFlagged}/>
@@ -78,6 +80,8 @@ function ViewServiceSeekerList() {
       <div>
         <SeekerList searchTerm={searchTerm} sortTerm={sortTerm} city={city} barangay={barangay} flagged={flagged} onSelectUser={handleUserSelect} toggleSearchBarVisibility={setIsUserSelected} />
       </div>
+      
+    </div>
     </div>
   );
 }

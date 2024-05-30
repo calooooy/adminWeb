@@ -134,84 +134,6 @@ function BarGraph() {
 
 
 
-
-
-/*
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
-
-ChartJS.register(ArcElement, Tooltip, Legend);
-
-const options = {
-  plugins: {
-    legend: {
-      display: false,
-      position: 'bottom'
-    },
-  },
-  layout: {
-    padding: {
-      bottom: 0, // Adjust bottom padding to create space between graph and legend
-    },
-  },
-};
-
-const textCenter = {
-  id: 'textCenter',
-  beforeDatasetsDraw(chart, argsm, pluginOptions) {
-    const {ctx, data} = chart;
-    
-    ctx.save();
-    ctx.font = 'bolder 30px sans-serif';
-    ctx.fillStyle = 'red';
-    ctx.fillText('text', chart.getDatasetMeta(0).data[0].x, chart.getDatasetMeta(0).data[0].y);
-  }
-}
-
-function generateRandomData(numLabels, min, max) {
-  const data = [];
-  for (let i = 0; i < numLabels; i++) {
-    data.push(Math.floor(Math.random() * (max - min + 1)) + min);
-  }
-  return data;
-}
-
-function PieGraph() {
-  const labels = ['5', '4', '3', '2', '1'];
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        label: 'Rating Count',
-        data: generateRandomData(labels.length, 30, 100), // Generate random data between 1 and 10
-        backgroundColor: [
-          '#00365B',
-          '#004E84',
-          '#0070C8',
-          '#76A8D5',
-          '#CFDBE7',
-        ],
-        borderColor: [
-          '#00365C',
-          '#004E85',
-          '#0070C9',
-          '#76A8D6',
-          '#CFDBE8',  
-        ],
-        borderWidth: 2,
-      },
-    ],
-  };
-
-  return (
-    <div style={{ width: '300px', height: '300px' }}>
-      <Doughnut options={options} data={data} plugins = {[textCenter]}/>
-    </div>
-  );
-}
-*/
-
-
 function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged, onSelectUser, toggleSearchBarVisibility }) {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -220,6 +142,17 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
   const [showServiceOverlay, setShowServiceOverlay] = useState(false);
   const [deletedUser, setDeletedUser] = useState(false);
   const [unsuspendUser, setUnsuspendUser] = useState(false);
+
+  const [width, setWidth] = useState(window.innerWidth);
+
+  const updateWidth = () => {
+    setWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -406,10 +339,25 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
   //   }
   // }, [selectedUser, onSelectUser]);
 
+  
+  const renderImage = (url, record) => (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        cursor: 'pointer',
+      }}
+      onClick={() => handleItemClick(record)}
+    >
+      <div style={{ width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden', border: '2px solid #75B9D9', }}>
+        <img src={url} alt="User" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      </div>
+    </div>
+  );
 
   const renderName = (text, record) => (
     <span
-      style={{ textAlign: 'left', fontSize: '20', cursor: 'pointer' }}
+      style={{ textAlign: 'left', fontSize: '18px', cursor: 'pointer' }}
       onClick={() => handleItemClick(record)}
       onMouseEnter={(e) => { e.target.style.textDecoration = 'underline'; e.target.style.color = '#75B9D9'; }} // Underline on hover
       onMouseLeave={(e) => { e.target.style.textDecoration = 'none'; e.target.style.color = 'black'; }} // Remove underline when not hovered
@@ -430,7 +378,9 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
           textAlign: 'center',
           textDecoration: 'none', // Remove underline by default
           color: 'inherit', // Use the default text color
-          fontSize: '20rm',
+          fontSize: '15px',
+          whiteSpace: 'normal', // Allow text to wrap
+          wordWrap: 'break-word', // Break long words
         }}
         onMouseEnter={(e) => { e.target.style.textDecoration = 'underline'; e.target.style.color = '#75B9D9'; }} // Underline on hover
         onMouseLeave={(e) => { e.target.style.textDecoration = 'none'; e.target.style.color = 'black'; }} // Remove underline when not hovered
@@ -440,7 +390,6 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       </span>
     </div>
   );
-
 
   const renderMobile = (text, record) => {
     const phoneNumber = text.startsWith('+63') ? '0' + text.slice(3) : text;
@@ -466,15 +415,37 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
     );
   };
 
+  // const renderCompletedServices = (text, record) => (
+  //   <div
+  //     style={{ display: 'flex', justifyContent: 'left', cursor: 'pointer' }}
+  //     onClick={() => handleItemClick(record)}
+  //   >
+  //     {/* <div style={{ width: 'auto', height: 35, backgroundColor: '#CFDFE7', display: 'flex', justifyContent: 'center', alignItems: 'center' }}> */}
+  //       <span style={{ textAlign: 'center' }}>{"Completed Services: " + text}</span>
+  //     {/* </div> */}
+  //   </div>
+  // );
 
   const renderCompletedServices = (text, record) => (
     <div
-      style={{ display: 'flex', justifyContent: 'center', cursor: 'pointer' }}
+      style={{ display: 'flex', justifyContent: 'left', cursor: 'pointer' }}
       onClick={() => handleItemClick(record)}
     >
-      <div style={{ width: 'auto', height: 35, backgroundColor: '#CFDFE7', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <span style={{ textAlign: 'center' }}>{"Completed Services: " + text}</span>
-      </div>
+      <span
+        style={{
+          textAlign: 'center',
+          textDecoration: 'none', // Remove underline by default
+          color: 'inherit', // Use the default text color
+          fontSize: '15px',
+          whiteSpace: 'normal', // Allow text to wrap
+          wordWrap: 'break-word', // Break long words
+        }}
+        onMouseEnter={(e) => { e.target.style.textDecoration = 'underline'; e.target.style.color = '#75B9D9'; }} // Underline on hover
+        onMouseLeave={(e) => { e.target.style.textDecoration = 'none'; e.target.style.color = 'black'; }} // Remove underline when not hovered
+        onClick={(e) => e.preventDefault()} // Prevent default click behavior
+      >
+        {"Completed Services: " + text}
+      </span>
     </div>
   );
 
@@ -483,27 +454,90 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       style={{ display: 'flex', justifyContent: 'center', cursor: 'pointer' }}
       onClick={() => handleItemClick(record)}
     >
-      <div style={{ width: 'auto', height: 35, backgroundColor: '#CFDFE7', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <span style={{ textAlign: 'center' }}>{"Rating: " + text}</span>
-      </div>
+      <span
+        style={{
+          textAlign: 'center',
+          textDecoration: 'none', // Remove underline by default
+          color: 'inherit', // Use the default text color
+          fontSize: '15px',
+          whiteSpace: 'normal', // Allow text to wrap
+          wordWrap: 'break-word', // Break long words
+        }}
+        onMouseEnter={(e) => { e.target.style.textDecoration = 'underline'; e.target.style.color = '#75B9D9'; }} // Underline on hover
+        onMouseLeave={(e) => { e.target.style.textDecoration = 'none'; e.target.style.color = 'black'; }} // Remove underline when not hovered
+        onClick={(e) => e.preventDefault()} // Prevent default click behavior
+      >
+        {"Rating: " + text}
+      </span>
     </div>
   );
+  
+  
+
+  // <span style={{ textAlign: 'center' }}>{"Completed Services: " + text}</span>
+  // <span style={{ textAlign: 'center' }}>{"Rating: " + text}</span>
+
+  // const renderRating = (text, record) => (
+  //   <div
+  //     style={{ display: 'flex', justifyContent: 'center', cursor: 'pointer' }}
+  //     onClick={() => handleItemClick(record)}
+  //   >
+  //     {/* <div style={{ width: 'auto', height: 35, backgroundColor: '#CFDFE7', display: 'flex', justifyContent: 'center', alignItems: 'center' }}> */}
+  //       <span style={{ textAlign: 'center' }}>{"Rating: " + text}</span>
+  //     {/* </div> */}
+  //   </div>
+  // );
+
+  const renderActions = (text, record) => {
+
+    if (!record) {
+      return null;
+    }
+
+    return (
+      <Dropdown
+        overlay={
+          <Menu>
+            <Menu.Item key="reward">Reward</Menu.Item>
+            {record.suspension && record.suspension.isSuspended === true ? <Menu.Item key="unsuspend" onClick={() => handleUnsuspend(record)}>Unsuspend</Menu.Item> : <Menu.SubMenu title="Suspend">
+              <Menu.Item key="5_hours" onClick={() => handleSubMenuClick(record, 5)}>5 hours</Menu.Item>
+              <Menu.Item key="1_day" onClick={() => handleSubMenuClick(record, 24)}>1 day</Menu.Item>
+              <Menu.Item key="1_week" onClick={() => handleSubMenuClick(record, 168)}>1 week</Menu.Item>
+            </Menu.SubMenu>
+            }
 
 
-  const renderImage = (url, record) => (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        cursor: 'pointer'
-      }}
-      onClick={() => handleItemClick(record)}
-    >
-      <div style={{ width: '50px', height: '50px', borderRadius: '50%', overflow: 'hidden' }}>
-        <img src={url} alt="User" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-      </div>
-    </div>
-  );
+
+            <Menu.Item key="delete" onClick={() => handleDelete(record)}>Delete</Menu.Item>
+          </Menu>
+        }
+        trigger={['click']}
+      >
+        <span className="ellipsis-icon">
+          <FaEllipsisV />
+        </span>
+      </Dropdown>
+    )
+  };
+
+  const renderStarRating = (rating) => {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+
+    const stars = [];
+    for (let i = 0; i < 5; i++) {
+      if (i < fullStars) {
+        stars.push(<FaStar key={i} className="star" />);
+      } else if (i === fullStars && hasHalfStar) {
+        stars.push(<FaStarHalfAlt key={i} className="star" />);
+      } else {
+        stars.push(<FaStar key={i} className="empty-star" />);
+      }
+    }
+
+    return <div className="star-rating">{stars}</div>;
+  };
+
 
   const handleItemClick = (record) => {
     console.log(record.id)
@@ -577,7 +611,6 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       });
   };
 
-
   const handleUnsuspend = (record) => {
     try {
       const userData = {
@@ -595,56 +628,6 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       console.error('Error unsuspending user: ', error);
     }
   }
-
-  const renderActions = (text, record) => {
-
-    if (!record) {
-      return null;
-    }
-
-    return (
-      <Dropdown
-        overlay={
-          <Menu>
-            <Menu.Item key="reward">Reward</Menu.Item>
-            {record.suspension && record.suspension.isSuspended === true ? <Menu.Item key="unsuspend" onClick={() => handleUnsuspend(record)}>Unsuspend</Menu.Item> : <Menu.SubMenu title="Suspend">
-              <Menu.Item key="5_hours" onClick={() => handleSubMenuClick(record, 5)}>5 hours</Menu.Item>
-              <Menu.Item key="1_day" onClick={() => handleSubMenuClick(record, 24)}>1 day</Menu.Item>
-              <Menu.Item key="1_week" onClick={() => handleSubMenuClick(record, 168)}>1 week</Menu.Item>
-            </Menu.SubMenu>
-            }
-
-
-
-            <Menu.Item key="delete" onClick={() => handleDelete(record)}>Delete</Menu.Item>
-          </Menu>
-        }
-        trigger={['click']}
-      >
-        <span className="ellipsis-icon">
-          <FaEllipsisV />
-        </span>
-      </Dropdown>
-    )
-  };
-
-  const renderStarRating = (rating) => {
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-
-    const stars = [];
-    for (let i = 0; i < 5; i++) {
-      if (i < fullStars) {
-        stars.push(<FaStar key={i} className="star" />);
-      } else if (i === fullStars && hasHalfStar) {
-        stars.push(<FaStarHalfAlt key={i} className="star" />);
-      } else {
-        stars.push(<FaStar key={i} className="empty-star" />);
-      }
-    }
-
-    return <div className="star-rating">{stars}</div>;
-  };
 
   function UserDetails({ userDetails }) {
     const { email, phone, address } = userDetails;
@@ -792,57 +775,53 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       )}
 
       {!selectedUser && (
-        <div className="scrollable-table">
-          <Table
-            style={{ width: '75vw' }}
-            components={{
-              body: {
-                cell: ({ children }) => <td>{children}</td>
-              }
-            }}
-            size='small'
-            columns={[
-              {
-                dataIndex: "profileImage",
-                render: (url, record) => renderImage(url, record),
-                width: '10%',
-              },
-              {
-                dataIndex: "fullName",
-                render: (text, record) => renderName(text, record),
-                width: '20%',
-              },
-              {
-                dataIndex: "email",
-                render: (text, record) => renderEmail(text, record),
-                width: '20%',
-              },
-              {
-                dataIndex: "phone",
-                render: (text, record) => renderMobile(text, record),
-                width: '15%',
-              },
-              {
-                dataIndex: "completedServices",
-                render: (text, record) => renderCompletedServices(text, record),
-                width: '15%',
-              },
-              {
-                dataIndex: "rating",
-                render: (text, record) => renderRating(text, record),
-                width: '15%',
-              },
-              {
-                dataIndex: 'actions',
-                render: renderActions,
-                width: '5%',
-              }
-            ]}
-            loading={loading}
-            dataSource={filteredDataBySort}
-            pagination={false}
-          />
-        </div>
+        <div className="scrollable-table" style={{ overflowX: 'auto' }}>
+        <Table
+          style={{ width: '100%' }}
+          size='small'
+          columns={[
+            {
+              dataIndex: "profileImage",
+              render: renderImage,
+              width: width < 768 ? '15%' : '10%', // Adjust width based on screen size
+            },
+            {
+              dataIndex: "fullName",
+              render: renderName,
+              width: width < 768 ? '25%' : '15%', // Adjust width based on screen size
+            },
+            // {
+            //   dataIndex: "email",
+            //   render: renderEmail,
+            //   width: width < 768 ? '25%' : '20%', // Adjust width based on screen size
+            // },
+            {
+              dataIndex: "phone",
+              render: renderMobile,
+              width: width < 768 ? '20%' : '20%', // Adjust width based on screen size
+            },
+            {
+              dataIndex: "completedServices",
+              render: renderCompletedServices,
+              width: width < 768 ? '20%' : '20%', // Adjust width based on screen size
+            },
+            {
+              dataIndex: "rating",
+              render: renderRating,
+              width: width < 768 ? '20%' : '20%', // Adjust width based on screen size
+            },
+            {
+              dataIndex: 'actions',
+              render: renderActions,
+              width: '5%',
+            }
+          ]}
+          loading={loading}
+          dataSource={filteredDataBySort}
+          pagination={false}
+          showHeader={false}
+        />
+      </div>
 
 
       )}

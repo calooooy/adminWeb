@@ -16,7 +16,7 @@ function Message() {
 	return (
 		<div style={{ width: '100%' }}>
 			<h1 className='DashboardHeader'>Message</h1>
-			<hr className='Divider' style={{ width: '100%' }} />
+			{/* <hr className='Divider' style={{ width: '100%' }} /> */}
 
             <div className='message-container'>
                 <List setActiveMessage={setActiveChat}/>

@@ -82,7 +82,7 @@ function Dashboard() {
 	return (
 		<div style={{ width: '100%' }}>
 			<h1 className='DashboardHeader'>Dashboard</h1>
-			<hr className='Divider' style={{ width: '100%'}} />
+			{/* <hr className='Divider' style={{ width: '100%'}} /> */}
 
 		   <div className='message-container'>
 				<div className='dbLeft'>
@@ -113,29 +113,8 @@ function Dashboard() {
 							<div className='TopPerforming'>
 								<TopPerforming />
 							</div>
-						
 					</div>
 				</div>
-
-			{/* <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-				<div style={{padding: '20px', display: 'flex', flexDirection: 'column'}}>
-					<Space direction="horizontal" style={{marginBottom: '20px', width: '685px', justifyContent: 'space-between'}}>
-						<DashboardCard title={"Service Seekers"} value={seekerCount}></DashboardCard>
-						<DashboardCard title={"Service Providers"} value={providerCount}></DashboardCard>
-						<DashboardCard title={"Completed Service "} value={completedServiceCount}></DashboardCard>
-					</Space>
-					<div style={{backgroundColor:'white', width: '100%', height:'300px'}}>
-						<DashboardChart />
-						</div>
-				</div>
-					<div style={{alignItems:'center', justifyContent: 'center', padding: '0px 0px 0px 20px'}}>
-						<Space>
-							<div className='TopPerforming'>
-								<TopPerforming />
-							</div>
-						</Space>
-					</div>
-			</div> */}
 		   </div>
 		</div>
 	);
@@ -184,7 +163,7 @@ function TopPerforming() {
 					};
 					const response = await Axios.get(`http://172.16.4.26:5000/admin/getUser/${doc.id}`);
 					const userData = response.data.data;
-					console.log(userData);
+					// console.log(userData);
 					providerInfo.profileImage = userData.profileImage;
 					providerData.push(providerInfo);
 				}));
@@ -222,10 +201,11 @@ function TopPerforming() {
 	}, []);
 
 	const renderImage = (url) => (
-		<div style={{ width: 50, height: 50, borderRadius: '50%', overflow: 'hidden', display:'flex', justifyContent:'center', alignItems:'center' }}>
-			<img src={url} alt="User" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+		<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
+		  <img src={url} alt="User" style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '50%', border: '2px solid #75B9D9', padding: '0px' }} />
 		</div>
-	);
+	  );
+	  
 
 	return (
 		<div>
@@ -234,10 +214,10 @@ function TopPerforming() {
 				style={{ width: '100%'}}
 				components={{
 					body: {
-						cell: ({ children }) => <td>{children}</td>
+						cell: ({ children }) => <td style={{padding:'10px 3px', justifyContent:'center', alignItems:'center', }}>{children}</td>
 					}
 				}}
-				size='small'
+				size='large'
 				columns={[
 					{
 						dataIndex: "rank",
@@ -247,7 +227,8 @@ function TopPerforming() {
 							textAlign: 'center', // Center align the text
 							display: 'flex', // Use flexbox to center vertically
 							justifyContent: 'center', // Center horizontally
-							alignItems: 'center' // Center vertically
+							alignItems: 'center', // Center vertically
+							padding: '3px'
 						}}>{text}</span>
 					},
 					{
@@ -258,13 +239,14 @@ function TopPerforming() {
 					{
 						dataIndex: "fullName",
 						render: (text, record) => (
-							<span style={{ textAlign: 'center', fontSize: '15px' }}>{text}</span>
+							<span style={{ textAlign: 'center', fontSize: '18px' }}>{text}</span>
 						)
 					}
 				]}
 				loading={loading}
 				dataSource={dataSource}
 				pagination={false}
+				showHeader={false}
 			/>
 		</div>
 	);

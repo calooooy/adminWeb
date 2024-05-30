@@ -3,19 +3,18 @@ import { useState, useEffect, useRef } from "react";
 import { getFirestore, collection, getDocs, onSnapshot, doc, deleteDoc, getDoc, setDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { set } from "firebase/database";
+import { Spin } from 'antd';
+
 
 const Chat = ( {message} ) => {
-
-
 	const [text, setText] = useState("");
-
-
 	const [messages, setMessages] = useState([]);
 	const [image, setImage] = useState({
 		file: null,
 		url: null
 	})
 	const [loading, setLoading] = useState(true);
+	const bottomRef = useRef(null);
 
 	useEffect(() => {
 
@@ -157,8 +156,6 @@ const Chat = ( {message} ) => {
 		}
 	}
 
-	const bottomRef = useRef(null);
-
 	const formatTimeStamps = (time) => {
 		if (time instanceof Date) {
 
@@ -181,9 +178,6 @@ const Chat = ( {message} ) => {
 
 
 		try {
-
-
-
 			const db = getFirestore();
 			const messagesCollection = collection(db, 'adminChats');
 			const q = doc(messagesCollection, message.id);
@@ -237,94 +231,92 @@ const Chat = ( {message} ) => {
 		}
 	}, [messages]);
 
+	// New useEffect to scroll to bottom when the message prop changes
+    useEffect(() => {
+        if (bottomRef.current) {
+            bottomRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [message]);
+
 	return (
 		<div className='chat'>
-			{loading === false ? messages.length > 0 ?
-			<>
-			<div className="top">
-				<div className="user">
-					<img src={message.usersImage.user} alt="Avatar" />
-					<div className="texts">
-						<span>{message.usersFullName.user}</span>
-						{/* <p>service provider</p> */}
-					</div>
+			{loading ? (
+				<div className="spinner-container">
+					<Spin size="large" />
 				</div>
-				<div className="icons">
-					{/* <img src="../message_assets/phone.png" alt="Phone Icon" />
-					<img src="../message_assets/video.png" alt="Video Icon" /> */}
-					<img src="../message_assets/info.png" alt="Info Icon" />
-				</div>
-			</div>
-			<div className="center">
-	            {messages.map(msg => (
-		            <div className={`message ${msg.user._id === message.usersId.admin ? 'own' : ''}`} key={msg.id}>
-			            {msg.user._id !== message.usersId.admin && <img style={{width: '40px', height:'40px', borderRadius:'50%'}} src={message.usersImage.user} alt="Avatar" />}
-
-			            {msg.video ? (
-				            <div className="video-text-container">
-                                <div className={`video ${msg.user._id === message.usersId.admin ? 'own' : ''}`}>
-                                    <video src={msg.video} type="video/mp4/" controls>
-						                Your browser does not support the video tag.
-					                </video>
-                                </div>
-					            <div className="texts">
-						            <span>{formatTimeStamps(msg.createdAt)}</span>
-					            </div>
-				            </div>
-			            ) : msg.image ? (
-				            <div className="img-text-container">
-					            <div className={`img ${msg.user._id === message.usersId.admin ? 'own' : ''}`}>
-						            <img src={msg.image} alt="Image" />
-					            </div>
-					            <div className="texts">
-						            <span>{formatTimeStamps(msg.createdAt)}</span>
-					            </div>
-				            </div>
-			            ) : (
-				            <div className="texts">
-					            <p>{msg.text}</p>
-					            <span>{formatTimeStamps(msg.createdAt)}</span>
-				            </div> 
-			            )}
-		            </div>
-	            ))}
-	            <div ref={bottomRef}></div>
-            </div>
-
-	<div className="bottom">
-		<div className="icons" style={{justifyContent:'center', alignItems:'center', padding:'0px', paddingTop:'0px', paddingBottom:'0px', marginBottom:'0px'}}>
-			<label htmlFor="file" style={{width:'auto', padding:'0px', paddingTop:'0px', margin:'0px', marginTop:'3px'}}>
-			    <img src="../message_assets/img.png" alt="" />
-			</label>
-			<input type="file" id="file" accept="image/*,video/*" style={{display:'none'}} onChange={handleImg} />
-		</div>
-
-		<input
-			type="text"
-			placeholder="Type a message..."
-			value={text}
-			onChange={e => setText(e.target.value)}
-			onKeyPress={handleKeyPress}
-		/>
-		{/* <div className="emoji">
-			<img src="../message_assets/emoji.png" alt="Emoji Icon" onClick={() => setOpen(prev => !prev)} />
-			{open && (
-				<div className="picker">
-					<EmojiPicker onEmojiClick={handleEmoji} style={{ width: '250px', height: '350px' }} />
-				</div>
+			) : (
+				messages.length > 0 && (
+					<>
+						<div className="top">
+							<div className="user">
+								<img src={message.usersImage.user} alt="Avatar" />
+								<div className="texts">
+									<span>{message.usersFullName.user}</span>
+								</div>
+							</div>
+							{/* <div className="icons">
+								<img src="../message_assets/info.png" alt="Info Icon" />
+							</div> */}
+						</div>
+						<div className="center">
+							{messages.map(msg => (
+								<div className={`message ${msg.user._id === message.usersId.admin ? 'own' : ''}`} key={msg._id}>
+									{msg.user._id !== message.usersId.admin && (
+										<img style={{ width: '40px', height: '40px', borderRadius: '50%' }} src={message.usersImage.user} alt="Avatar" />
+									)}
+	
+									{msg.video ? (
+										<div className="video-text-container">
+											<div className={`video ${msg.user._id === message.usersId.admin ? 'own' : ''}`}>
+												<video src={msg.video} type="video/mp4" controls>
+													Your browser does not support the video tag.
+												</video>
+											</div>
+											<div className="texts">
+												<span>{formatTimeStamps(msg.createdAt)}</span>
+											</div>
+										</div>
+									) : msg.image ? (
+										<div className="img-text-container">
+											<div className={`img ${msg.user._id === message.usersId.admin ? 'own' : ''}`}>
+												<img src={msg.image} alt="Image" />
+											</div>
+											<div className="texts">
+												<span>{formatTimeStamps(msg.createdAt)}</span>
+											</div>
+										</div>
+									) : (
+										<div className="texts">
+											<p>{msg.text}</p>
+											<span>{formatTimeStamps(msg.createdAt)}</span>
+										</div>
+									)}
+								</div>
+							))}
+							<div ref={bottomRef}></div>
+						</div>
+						<div className="bottom">
+							<div className="icons" style={{ justifyContent: 'center', alignItems: 'center', padding: '0px', paddingTop: '0px', paddingBottom: '0px', marginBottom: '0px' }}>
+								<label htmlFor="file" style={{ width: 'auto', padding: '0px', paddingTop: '0px', margin: '0px', marginTop: '3px' }}>
+									<img src="../message_assets/img.png" alt="" />
+								</label>
+								<input type="file" id="file" accept="image/*,video/*" style={{ display: 'none' }} onChange={handleImg} />
+							</div>
+							<input
+								type="text"
+								placeholder="Type a message..."
+								value={text}
+								onChange={e => setText(e.target.value)}
+								onKeyPress={handleKeyPress}
+							/>
+							<button className={`sendButton ${!text ? 'disabled' : ''}`} onClick={handleSendMessage} disabled={!text}>Send</button>
+						</div>
+					</>
+				)
 			)}
-		</div> */}
-		<button className={`sendButton ${!text ? 'disabled' : ''}`} onClick={handleSendMessage} disabled={!text}>Send</button>
-
-	</div>
-	</> :
-	null
-	:
-		null
-		}
-
-	</div>
+		</div>
 	);
+	
 };
 
 export default Chat;
