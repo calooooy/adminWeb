@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaEllipsisV, FaAngleLeft, FaStar, FaStarHalfAlt } from 'react-icons/fa';
-import { Table, Dropdown, Menu, Space } from 'antd';
+import { Table, Dropdown, Menu, Space, Modal } from 'antd';
 import { getFirestore, collection, getDocs, getDoc, onSnapshot, doc, deleteDoc } from 'firebase/firestore';
 import Axios from 'axios';
 
@@ -52,7 +52,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
             reportsReceived: data.reportsReceived || 0,
             violationRecord: data.violationRecord || 0,
           };
-          const response = await Axios.get(`http://172.16.4.26:5000/admin/getUser/${doc.id}`);
+          const response = await Axios.get(`http://192.168.1.10:5000/admin/getUser/${doc.id}`);
           const userData = response.data.data;
           seekerInfo.profileImage = userData.profileImage;
           seekerInfo.email = userData.email;
@@ -328,7 +328,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
       if (typeof action !== 'number') {
         throw new Error('Action must be a number');
       }
-      Axios.patch('http://172.16.4.26:5000/admin/suspendUser', userData)
+      Axios.patch('http://192.168.1.10:5000/admin/suspendUser', userData)
         .then((response) => {
           alert('User suspended successfully');
         }
@@ -341,9 +341,17 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
     }
   }
 
+  const handleReward = (record) => {
+    Modal.info({
+      title: 'Rewards and Voucers',
+      content: 'This feature is coming soon.',
+      centered: true,
+    });
+  };
+
   const handleDelete = (record) => {
     console.log(record.id)
-    Axios.post(`http://172.16.4.26:5000/admin/deleteUser`, { userId: record.id })
+    Axios.post(`http://192.168.1.10:5000/admin/deleteUser`, { userId: record.id })
       .then((response) => {
         const db = getFirestore();
         const seekerCollection = collection(db, "seekers");
@@ -367,7 +375,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
       const userData = {
         email: record.email
       }
-      Axios.patch('http://172.16.4.26:5000/admin/unsuspendUser', userData)
+      Axios.patch('http://192.168.1.10:5000/admin/unsuspendUser', userData)
         .then((response) => {
           alert('User unsuspended successfully');
           setUnsuspendUser(true);
@@ -390,7 +398,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
       <Dropdown
         overlay={
           <Menu>
-            <Menu.Item key="reward">Reward</Menu.Item>
+            <Menu.Item key="reward" onClick={() => handleReward(record)}>Reward</Menu.Item>
             {record.suspension && record.suspension.isSuspended === true ? <Menu.Item key="unsuspend" onClick={() => handleUnsuspend(record)}>Unsuspend</Menu.Item> : <Menu.SubMenu title="Suspend">
               <Menu.Item key="5_hours" onClick={() => handleSubMenuClick(record, 5)}>5 hours</Menu.Item>
               <Menu.Item key="1_day" onClick={() => handleSubMenuClick(record, 24)}>1 day</Menu.Item>
@@ -507,7 +515,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
       )}
 
       {!selectedUser && (
-        <div className="scrollable-table" style={{ overflowX: 'auto' }}>
+        <div className="scrollable-table" style={{ overflowX: 'auto', paddingBottom: 20 }}>
           <Table
             style={{ width: '100%' }}
             components={{

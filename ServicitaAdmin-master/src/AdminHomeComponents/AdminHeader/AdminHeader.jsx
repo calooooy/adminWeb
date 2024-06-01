@@ -1,9 +1,9 @@
-import { Badge, Space, Dropdown, Menu, Popover, List } from "antd";
+import { Badge, Space, Dropdown, Menu, Popover, List, Button } from "antd";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Axios from 'axios';
 import '../AdminHeader/adminHeader.css';
-import { BellOutlined, } from '@ant-design/icons';
+import { BellOutlined, LogoutOutlined } from '@ant-design/icons'; // Import LogoutOutlined icon
 
 function AdminHeader({ onLogout }) {
     const [username, setUsername] = useState(localStorage.getItem('adminNickname'));
@@ -23,13 +23,13 @@ function AdminHeader({ onLogout }) {
                     return;
                 }
 
-                const response = await Axios.get(`http://172.16.4.26:5000/notifications/getNotifications/${userId}`);
+                const response = await Axios.get(`http://192.168.1.10:5000/notifications/getNotifications/${userId}`);
                 const notificationsData = response.data.data;
 
                 const notificationInfoData = [];
 
                 for (const notification of notificationsData) {
-                    const otherUserResponse = await Axios.get(`http://172.16.4.26:5000/admin/getUser/${notification.otherUserId}`);
+                    const otherUserResponse = await Axios.get(`http://192.168.1.10:5000/admin/getUser/${notification.otherUserId}`);
                     const otherProfileImage = otherUserResponse.data.data.profileImage;
 
                     notificationInfoData.push({
@@ -81,15 +81,14 @@ function AdminHeader({ onLogout }) {
 
     return (
         <div className="AdminHeader">
-            <div style={{display: 'flex', alignItems: 'center'}}>
-                <img src={getImagePath("side-logo.png")} alt="Logo" style={{ width: '100%', height: '100%' }} />
-                <a className="headerTitle">Servicita</a>
+            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', padding: '0px 10px', gap: '3px'}}>
+                <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center',}}>
+                    <img className="side-logo" src={getImagePath("side-logo.png")} alt="Logo" style={{ position: 'unset', width: '120px'}} />
+                </div>
+                <div className="headerTitle" style={{display: 'flex'}}>Servicita</div>
             </div>
             
-            <div className="icons-container">
-                {/* <div className="userNameDisplay">
-                    Hello, {username}!
-                </div> */}
+            <div className="icons-container" style = {{display: 'flex', flexDirection: 'row', padding: '10px 20px'}}>
                 <div style={{ paddingRight: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
                     <Space>
                         <Popover
@@ -113,11 +112,15 @@ function AdminHeader({ onLogout }) {
                         <Badge>
                             <div className="notifbadge" style={{ borderRadius:'50%', width:'55px', height: '55px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop:'12px', marginLeft: '10px'}}>
                                 <Dropdown overlay={<Menu>
-                                    <Menu.Item key="logout" onClick={onLogout}>Logout</Menu.Item>
-                                    </Menu>} trigger={['click']}>
-                                    <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                                    <Menu.Item key="logout">
+                                        <Button type="text" onClick={onLogout}>
+                                            <LogoutOutlined /> Logout
+                                        </Button>
+                                    </Menu.Item>
+                                </Menu>} trigger={['click']}>
+                                    {/* <Button className="ant-dropdown-link" onClick={e => e.preventDefault()}> */}
                                         <img src={getImagePath("admin profile.png")} alt="Profile" style={{ width: '55px',  borderRadius: '50%', objectFit: 'cover' }} />
-                                    </a>
+                                    {/* </Button> */}
                                 </Dropdown>
                             </div>
                         </Badge>

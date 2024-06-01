@@ -73,7 +73,7 @@ function ViewServiceSeekerList() {
       <div className='message-container' style={{display: 'flex', flexDirection: 'column'}}>
 
       {!isUserSelected && ( // Render the SearchBar only if a user is not selected
-        <div style={{ width: '1150px' }}>
+        <div style={{ width: '75vw' }}>
           <SearchBar onSearch={handleSearch} onSort={handleSort} findByCity={handleCity} findByBarangay={handleBarangay} findByFlag={handleFlagged} savedSearchTermm={savedSearchTerm} savedCityy={savedCity} savedBarangayy={savedBarangay} savedFlaggedd={savedFlagged}/>
         </div>
       )}

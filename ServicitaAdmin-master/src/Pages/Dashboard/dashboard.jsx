@@ -161,7 +161,7 @@ function TopPerforming() {
 						rating: data.rating || 0,
 						completedServices: data.completedServices || 0
 					};
-					const response = await Axios.get(`http://172.16.4.26:5000/admin/getUser/${doc.id}`);
+					const response = await Axios.get(`http://192.168.1.10:5000/admin/getUser/${doc.id}`);
 					const userData = response.data.data;
 					// console.log(userData);
 					providerInfo.profileImage = userData.profileImage;
@@ -296,7 +296,11 @@ import {
         },
         scales: {
             x: { grid: { display: false }},
-            y: { grid: { display: false }},
+            y: {
+				min: 0, // Set the minimum value for the y-axis
+				max: 1000, // Set the maximum value for the y-axis
+				grid: { display: false },
+			},
           }
     };
 
@@ -305,7 +309,7 @@ import {
       
         function generateRandomData() {
           const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-          const randomData = labels.map(() => Math.random() * 1000);
+          const randomData = labels.map(() => Math.random() * 700 + 300);
           return {
             labels,
             datasets: [

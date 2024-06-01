@@ -18,7 +18,7 @@ function Message() {
 			<h1 className='DashboardHeader'>Message</h1>
 			{/* <hr className='Divider' style={{ width: '100%' }} /> */}
 
-            <div className='message-container'>
+            <div className='message-container1'>
                 <List setActiveMessage={setActiveChat}/>
 				{finalActiveChat !== null ? (
                     <Chat message={finalActiveChat} />

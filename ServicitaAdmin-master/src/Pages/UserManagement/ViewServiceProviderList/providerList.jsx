@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaEllipsisV, FaAngleLeft, FaStar, FaStarHalfAlt } from 'react-icons/fa';
-import { Table, Dropdown, Menu, Space, Flex } from 'antd';
+import { Table, Dropdown, Menu, Space, Flex, Modal } from 'antd';
 import { getFirestore, collection, getDocs, onSnapshot, doc, deleteDoc, getDoc } from 'firebase/firestore';
 import Axios from 'axios';
 
@@ -187,7 +187,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
             violationRecord: data.violationRecord || 0,
             services: data.services || [],
           };
-          const response = await Axios.get(`http://172.16.4.26:5000/admin/getUser/${doc.id}`);
+          const response = await Axios.get(`http://192.168.1.10:5000/admin/getUser/${doc.id}`);
           const userData = response.data.data;
           providerInfo.profileImage = userData.profileImage;
           providerInfo.email = userData.email;
@@ -498,7 +498,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       <Dropdown
         overlay={
           <Menu>
-            <Menu.Item key="reward">Reward</Menu.Item>
+            <Menu.Item key="reward" onClick={() => handleReward(record)}>Reward</Menu.Item>
             {record.suspension && record.suspension.isSuspended === true ? <Menu.Item key="unsuspend" onClick={() => handleUnsuspend(record)}>Unsuspend</Menu.Item> : <Menu.SubMenu title="Suspend">
               <Menu.Item key="5_hours" onClick={() => handleSubMenuClick(record, 5)}>5 hours</Menu.Item>
               <Menu.Item key="1_day" onClick={() => handleSubMenuClick(record, 24)}>1 day</Menu.Item>
@@ -557,7 +557,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
         userId: record.id,
         action: action
       }
-      Axios.patch('http://172.16.4.26:5000/admin/suspendUser', userData)
+      Axios.patch('http://192.168.1.10:5000/admin/suspendUser', userData)
         .then((response) => {
           alert('User suspended successfully');
         }
@@ -570,11 +570,19 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
     }
   }
 
+  const handleReward = (record) => {
+    Modal.info({
+      title: 'Rewards and Voucers',
+      content: 'This feature is coming soon.',
+      centered: true,
+    });
+  };
+
   const handleDelete = (record) => {
     const userData = {
       userId: record.id
     };
-    Axios.post(`http://172.16.4.26:5000/admin/deleteUser`, userData)
+    Axios.post(`http://192.168.1.10:5000/admin/deleteUser`, userData)
       .then((response) => {
         const db = getFirestore();
         const providerCollection = collection(db, "providers");
@@ -616,7 +624,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       const userData = {
         email: record.email
       }
-      Axios.patch('http://172.16.4.26:5000/admin/unsuspendUser', userData)
+      Axios.patch('http://192.168.1.10:5000/admin/unsuspendUser', userData)
         .then((response) => {
           alert('User unsuspended successfully');
           setUnsuspendUser(true);
@@ -775,7 +783,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       )}
 
       {!selectedUser && (
-        <div className="scrollable-table" style={{ overflowX: 'auto' }}>
+        <div className="scrollable-table" style={{ overflowX: 'auto', paddingBottom: 20}}>
         <Table
           style={{ width: '100%' }}
           size='small'
@@ -788,7 +796,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
             {
               dataIndex: "fullName",
               render: renderName,
-              width: width < 768 ? '25%' : '15%', // Adjust width based on screen size
+              width: width < 768 ? '25%' : '20%', // Adjust width based on screen size
             },
             // {
             //   dataIndex: "email",

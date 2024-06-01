@@ -36,7 +36,7 @@ function NewServiceListings() {
 						verified: data.verified,
 						status: data.status
 					};
-					const response = await Axios.get(`http://172.16.4.26:5000/admin/getUser/${data.providerId}`);
+					const response = await Axios.get(`http://192.168.1.10:5000/admin/getUser/${data.providerId}`);
 					const userData = response.data.data;
 					servicesInfo.profileImage = userData.profileImage;
 
@@ -179,70 +179,67 @@ function NewServiceListings() {
 		<div className='newServiceListing'>
 			<div>
 				<h1 className='DashboardHeader'>New Service Listing</h1>
-				<hr className='Divider' style={{ width: '1185px' }} />
+				{/* <hr className='Divider' style={{ width: '1185px' }} /> */}
 			</div>
-			<div className='newServiceListingRender'>
-				{showSpinner ? (
-					<div className='showSpinner'>
-						<Spin size="large" />
-					</div>
-				) : (
-					filterByUpdatedStatus.length === 0 ? (
-						<div>No new service listings to be reviewed</div>
+			<div className='message-container'>
+				<div className='newServiceListingRender1' style={{height: '100%', overflowX: 'hidden'}}>
+					{showSpinner ? (
+						<div className='showSpinner'>
+							<Spin size="large" />
+						</div>
 					) : (
-						<div>
-
-						<div className='service-scroller'>
-							{updating ? (
-								<div className='updateSpinner'>
-									<Spin size="large" />
-								</div>
-							) : (
-								<>
-								<div className='serviceListingCount'>
-									Service Listings to Review: {filterByUpdatedStatus.length}
-								</div>
-								{filterByUpdatedStatus.map(servicesInfo => (
-									<div className='serviceCard'>
-										<div key={servicesInfo.id} className='serviceCardContent'>
-											<div className='serviceCardImage' >
-												<img alt="cover" src={servicesInfo.coverImage} style={{ width: '100%', aspectRatio: '4/4', objectFit: 'cover', marginBottom: '-20px' }} />
-											</div>
-											<div className='serviceContents' >
-												<div className='serviceHeader'>
-													<div className='serviceLeft'>
-														<h3 className='serviceName'>{servicesInfo.name}</h3>
-														<div className='serviceprovider'>
-															<img alt="cover" src={servicesInfo.profileImage} style={{ width: '25px', height: '25px', borderRadius: '50%' }}></img>
-															<p className='provider-Name'>{servicesInfo.providerName}</p>
+						<>
+							<div className='serviceListingCount1' style={{padding: '10px'}}>
+								{filterByUpdatedStatus.length === 0 
+									? 'No new service listings to be reviewed' 
+									: `Service Listings to Review: ${filterByUpdatedStatus.length}`}
+							</div>
+							{filterByUpdatedStatus.length > 0 && (
+								<div className='service-scroller1' style={{backgroundColor: 'white', padding: '15px', margin: '2px 15px 15px 15px', display:'flex', flexDirection:'row', gap: '15px', borderRadius: '10px', overflowX: 'scroll', boxSizing: 'border-box' }}>
+									{updating ? (
+										<div className='updateSpinner'>
+											<Spin size="large" />
+										</div>
+									) : (
+										<>
+											{filterByUpdatedStatus.map(servicesInfo => (
+												<div className='serviceCard1' style={{ width: '300px', boxShadow: '7px 5px 5px rgba(30, 30, 30, 0.3)', borderRadius: '15px', backgroundColor: '#d9d9d9'}} key={servicesInfo.id}>
+														<div className='serviceCardImage1' style={{ width: '300px' }}>
+															<img alt="cover" src={servicesInfo.coverImage} style={{ width: '100%', aspectRatio: '4/4', objectFit: 'cover', borderTopLeftRadius: '15px', borderTopRightRadius: '10px', padding: '0px', margin: '0px' }} />
+														</div>
+														<div className='serviceContents1' style={{padding: '0px', margin: '0px'}}>
+															<div className='serviceHeader1' style={{margin: '0px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: '0px 10px'}}>
+																<div className='serviceLeft1' style={{padding: '0px', margin: '0px'}}>
+																	<h3 className='serviceName1' style={{padding: '0px', margin: '0px', fontSize: 24}}>{servicesInfo.name}</h3>
+																	<div className='serviceprovider1' style={{ gap: '5px',display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: '0px', margin: '0px'}}>
+																		<img alt="cover" src={servicesInfo.profileImage} style={{ width: '25px', height: '25px', borderRadius: '50%', padding: '0px', margin: '3px 0px', border: '1px solid #1C729A'}} />
+																		<p className='provider-Name1' style={{padding: '0px', margin: '0px', fontSize: 16}}>{servicesInfo.providerName}</p>
+																	</div>
+																</div>
+																<div className='serviceRight1' style={{width: 30, height: 30, borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+																	<Dropdown overlay={() => menu(servicesInfo)} trigger={['click']}>
+																		<FaEllipsisV className='service-listing-ellipsis1' style={{height: '20px'}}/>
+																	</Dropdown>
+																</div>
+															</div>
+															<div className='description1' style={{height: 80, padding: '5px 20px', fontSize: 12, textAlign: 'justify'}}>{servicesInfo.description}</div>
+															<div className='price1' style={{padding: 10, display: 'flex', justifyContent: 'end', fontSize: 24, color: '#1C729A'}}>P{servicesInfo.minPrice} - P{servicesInfo.maxPrice}</div>
+														
 														</div>
 													</div>
-													<div className='serviceRight'>
-														<Dropdown overlay={() => menu(servicesInfo)} trigger={['click']}>
-															<FaEllipsisV className='service-listing-ellipsis'/>
-														</Dropdown>
-													</div>
-
-												</div>
-
-												<div className='description'>{servicesInfo.description}</div>
-
-												<div className='bottom-part'>
-													<div className='price'>P{servicesInfo.minPrice} - P{servicesInfo.maxPrice}</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								))}
-
-							</>)}
-						</div>
-						</div>
-					)
-				)}
+											))}
+										</>
+									)}
+								</div>
+							)}
+						</>
+					)}
+				</div>
 			</div>
 		</div>
 	);
+	
+	
 
 
 
@@ -252,47 +249,3 @@ export default NewServiceListings
 
 
 
-
-
-
-
-{/* <img alt="cover" src={servicesInfo.coverImage} style={{ width: '100%', aspectRatio: '4/4', objectFit: 'cover', marginBottom: '-20px' }} /> height: 200, */}
-
-
-{/* <div style={{ padding: '20px', paddingBottom: '10px', width: '100%', overflowX: 'auto' }}>
-	<div style={{ display: 'flex', maxWidth: '100%' }}>
-		{filterByVerified.map(servicesInfo => (
-			<Card key={servicesInfo.id} style={{ width: 'calc(50% - 10px)', marginBottom: '0px', marginRight: '10px', borderRadius: '0px' }}>
-				<img alt="cover" src={servicesInfo.coverImage} style={{ width: '100%', height: 200, objectFit: 'cover' }} />
-				<div style={{}}>
-					<h3>{servicesInfo.name}</h3>
-					<p>{servicesInfo.description}</p>
-					<p>Price Range: P{servicesInfo.minPrice} - P{servicesInfo.maxPrice}</p>
-					<p>Provider: {servicesInfo.providerName}</p>
-				</div>
-			</Card>
-		))}
-	</div>
-	</div> */}
-
-
-{/* <div style={{ padding: '20px' }}>
-	<div className='service-scroller' style={{ display: 'grid', gap: '15px', gridAutoFlow: 'column', gridAutoColumns: '33%', overflowX: 'auto', overscrollBehaviorInline: 'contain', width: '100%' }}>
-		{filterByVerified.map(servicesInfo => (
-			<div style={{ width: '100%', height: '500px', backgroundColor: '#FFFFFF', boxShadow: '7px 5px 5px rgba(30, 30, 30, 0.3)' }}>
-				<div key={servicesInfo.id} style={{ width: '100%', marginRight: '10px', borderRadius: '0px' }}>
-					<div style={{ inlineSize: '100%', aspectRatio: '16/9', objectFit: 'cover' }}>
-						<img alt="cover" src={servicesInfo.coverImage} style={{ width: '100%', height: 200, objectFit: 'cover' }} />
-					</div>
-					<div style={{}}>
-						<h3>{servicesInfo.name}</h3>
-						<p>{servicesInfo.description}</p>
-						<p>Price Range: P{servicesInfo.minPrice} - P{servicesInfo.maxPrice}</p>
-						<p>Provider: {servicesInfo.providerName}</p>
-					</div>
-				</div>
-			</div>
-
-		))}
-	</div>
-</div> */}
