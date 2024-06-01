@@ -113,12 +113,14 @@ body {
 .line-divider {}
 
 .DashboardHeader {
-  margin-top: 15px;
-  margin-left: 10px;
+  /* margin-top: 15px;
+  margin-left: 10px; */
   /* margin-left: 15px;
   margin-right: 15px; */
-  width: 100%;
+  /* width: 100%; */
+  margin: 0;
   font-family: 'Didact-Gothic';
+  padding: 20px;
 
 }
 
@@ -1318,7 +1320,7 @@ label {
 .message-container {
   width: 75vw;
   /* height: 75vh; */
-  margin: 20px;
+  margin: 0px 20px 20px 20px;
   background-Color:rgba(17, 25, 40, 0.75); 
   backdrop-Filter: blur(19px) saturate(180%);
   color: #d9d9d9;
@@ -1329,7 +1331,7 @@ label {
 .message-container1 {
   width: 75vw;
   height: 70vh;
-  margin: 20px;
+  margin: 0px 20px 20px 20px;
   background-Color:rgba(17, 25, 40, 0.75); 
   backdrop-Filter: blur(19px) saturate(180%);
   color: #d9d9d9;
