@@ -18,7 +18,7 @@ function InProgressComplaints() {
 		const fetchReports = async () => {
 			try {
 
-				const response = await Axios.get('http://192.168.1.10:5000/report/getReports');
+				const response = await Axios.get('http://192.168.254.158:5001/report/getReports');
 				const reportsData = response.data;
 
 				// Initialize array to store report info
@@ -28,8 +28,8 @@ function InProgressComplaints() {
 				for (const report of reportsData) {
 					var reporterDoc, reportedDoc
 
-					const reporterResponse = await Axios.get(`http://192.168.1.10:5000/admin/getUser/${report.reporterId}`); //for reporter profileImage
-					const reportedResponse = await Axios.get(`http://192.168.1.10:5000/admin/getUser/${report.reportedId}`); //for reported role
+					const reporterResponse = await Axios.get(`http://192.168.254.158:5001/admin/getUser/${report.reporterId}`); //for reporter profileImage
+					const reportedResponse = await Axios.get(`http://192.168.254.158:5001/admin/getUser/${report.reportedId}`); //for reported role
 
 					const reporterSuspended = reporterResponse.data.data.suspension.isSuspended
 					const reportedSuspended = reportedResponse.data.data.suspension.isSuspended
@@ -173,7 +173,7 @@ function InProgressComplaints() {
 		setUpdating(true)
 
 		try{
-            await Axios.put(`http://192.168.1.10:5000/report/updateReport/${record.id}`, {
+            await Axios.put(`http://192.168.254.158:5001/report/updateReport/${record.id}`, {
                 status: 'RESOLVED'
               });
 
@@ -225,7 +225,7 @@ function InProgressComplaints() {
 		  const userData = {
 			email: record.reporterEmail
 		  }
-		  Axios.patch('http://192.168.1.10:5000/admin/unsuspendUser', userData)
+		  Axios.patch('http://192.168.254.158:5001/admin/unsuspendUser', userData)
 			.then((response) => {
 			  alert('User unsuspended successfully');
 			  setUnsuspendUser(true);
@@ -245,7 +245,7 @@ function InProgressComplaints() {
 		  const userData = {
 			email: record.reportedEmail
 		  }
-		  Axios.patch('http://192.168.1.10:5000/admin/unsuspendUser', userData)
+		  Axios.patch('http://192.168.254.158:5001/admin/unsuspendUser', userData)
 			.then((response) => {
 			  alert('User unsuspended successfully');
 			  setUnsuspendUser(true);
@@ -325,7 +325,7 @@ function InProgressComplaints() {
 			userId: type === 'reporter' ? record.reporterId : record.reportedId,
 			action: action
 		  }
-		  Axios.patch('http://192.168.1.10:5000/admin/suspendUser', userData)
+		  Axios.patch('http://192.168.254.158:5001/admin/suspendUser', userData)
 			.then((response) => {
 			  alert('User suspended successfully');
 			}
@@ -333,7 +333,7 @@ function InProgressComplaints() {
 			.catch((error) => {
 			  console.error('Error suspending user: ', error);
 			});
-            await Axios.put(`http://192.168.1.10:5000/report/updateReport/${record.id}`, {
+            await Axios.put(`http://192.168.254.158:5001/report/updateReport/${record.id}`, {
                 status: 'IN PROGRESS'
               });
 			setChanges(true)

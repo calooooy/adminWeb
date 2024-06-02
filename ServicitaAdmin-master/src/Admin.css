@@ -82,6 +82,7 @@ body {
   flex: 1;
   overflow: hidden;
   overflow-y: auto;
+  background-color: white;
   /* justify-content: flex-start;
   align-items: flex-start; */
   /* padding-left: 0px; */
@@ -90,6 +91,7 @@ body {
 .SideMenu {
   width: 20%;
   height: 100%;
+  /* border-right: 1px solid black; */
 }
 
 .SideMenuVertical {
@@ -98,6 +100,7 @@ body {
 
 .PageContent {
   /* flex:1; */
+  background-color: white;
 }
 
 .icons-container {
@@ -106,7 +109,6 @@ body {
   align-items: center;
   justify-content: center;
   padding-right: 10px;
-  
 }
 
 
@@ -834,19 +836,20 @@ label {
 .sorting-buttons {
   display: flex;
   /* Ensures the buttons are arranged horizontally */
-  margin-top: 15px;
-  margin-left: 10px;
+  /* margin-top: 15px;
+  margin-left: 10px; */
   /* Adjust as needed */
-  margin-right: 25.5px;
+  /* margin-right: 25.5px; */
 }
 
 .sort-button {
   font-size: 16px;
-  padding: 5px 10px;
+  gap: 10;
+  /* padding: 5px 10px; */
   border: 1px solid #ccc;
   background-color: #fff;
   cursor: pointer;
-  margin-right: 5px;
+  /* margin-right: 5px; */
   /* Adjust as needed */
 }
 
@@ -1058,7 +1061,7 @@ label {
 }
 
 .showSpinner {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -1318,8 +1321,9 @@ label {
 /* /////////////////////////////////////MESSAGING//////////////////////////////////// */
 
 .message-container {
+  /* max-width: 75vw; */
   width: 75vw;
-  /* height: 75vh; */
+  height: 75vh;
   margin: 0px 20px 20px 20px;
   background-Color:rgba(17, 25, 40, 0.75); 
   backdrop-Filter: blur(19px) saturate(180%);
@@ -1373,4 +1377,12 @@ label {
 .serviceRight1:hover {
   background-color: #f0f0f0; /* Change to whatever background color you prefer */
   animation: enlarge 0.3s
+}
+
+
+
+/* SELECTED SEEKER*/
+
+.selectedSeeker1 {
+  font-family: 'Didact-Gothic';
 }

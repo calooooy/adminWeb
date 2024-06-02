@@ -36,7 +36,7 @@ function NewServiceListings() {
 						verified: data.verified,
 						status: data.status
 					};
-					const response = await Axios.get(`http://192.168.1.10:5000/admin/getUser/${data.providerId}`);
+					const response = await Axios.get(`http://192.168.254.158:5001/admin/getUser/${data.providerId}`);
 					const userData = response.data.data;
 					servicesInfo.profileImage = userData.profileImage;
 
@@ -195,7 +195,7 @@ function NewServiceListings() {
 									: `Service Listings to Review: ${filterByUpdatedStatus.length}`}
 							</div>
 							{filterByUpdatedStatus.length > 0 && (
-								<div className='service-scroller1' style={{backgroundColor: 'white', padding: '15px', margin: '2px 15px 15px 15px', display:'flex', flexDirection:'row', gap: '15px', borderRadius: '10px', overflowX: 'scroll', boxSizing: 'border-box' }}>
+								<div className='service-scroller1' style={{backgroundColor: 'white', padding: '15px', margin: '2px 15px 15px 15px', display:'flex', flexDirection:'row', gap: '15px', borderRadius: '10px', overflowX: 'scroll', boxSizing: 'border-box', }}>
 									{updating ? (
 										<div className='updateSpinner'>
 											<Spin size="large" />
@@ -203,7 +203,7 @@ function NewServiceListings() {
 									) : (
 										<>
 											{filterByUpdatedStatus.map(servicesInfo => (
-												<div className='serviceCard1' style={{ width: '300px', boxShadow: '7px 5px 5px rgba(30, 30, 30, 0.3)', borderRadius: '15px', backgroundColor: '#d9d9d9'}} key={servicesInfo.id}>
+												<div className='serviceCard1' style={{ width: '300px',  borderRadius: '15px', backgroundColor: '#ededed'}} key={servicesInfo.id}>
 														<div className='serviceCardImage1' style={{ width: '300px' }}>
 															<img alt="cover" src={servicesInfo.coverImage} style={{ width: '100%', aspectRatio: '4/4', objectFit: 'cover', borderTopLeftRadius: '15px', borderTopRightRadius: '10px', padding: '0px', margin: '0px' }} />
 														</div>

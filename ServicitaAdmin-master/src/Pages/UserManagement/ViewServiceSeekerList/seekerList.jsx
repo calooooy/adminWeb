@@ -52,7 +52,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
             reportsReceived: data.reportsReceived || 0,
             violationRecord: data.violationRecord || 0,
           };
-          const response = await Axios.get(`http://192.168.1.10:5000/admin/getUser/${doc.id}`);
+          const response = await Axios.get(`http://192.168.254.158:5001/admin/getUser/${doc.id}`);
           const userData = response.data.data;
           seekerInfo.profileImage = userData.profileImage;
           seekerInfo.email = userData.email;
@@ -155,7 +155,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
   //         reportsReceived: data.reportsReceived || 0,
   //         violationRecord: data.violationRecord || 0,
   //       };
-  //       const response = await Axios.get(`http://192.168.1.10:5000/admin/getUser/${doc.id}`);
+  //       const response = await Axios.get(`http://192.168.254.158:5001/admin/getUser/${doc.id}`);
   //       const userData = response.data.data;
   //       updatedUser.profileImage = userData.profileImage;
   //       updatedUser.email = userData.email;
@@ -328,7 +328,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
       if (typeof action !== 'number') {
         throw new Error('Action must be a number');
       }
-      Axios.patch('http://192.168.1.10:5000/admin/suspendUser', userData)
+      Axios.patch('http://192.168.254.158:5001/admin/suspendUser', userData)
         .then((response) => {
           alert('User suspended successfully');
         }
@@ -351,7 +351,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
 
   const handleDelete = (record) => {
     console.log(record.id)
-    Axios.post(`http://192.168.1.10:5000/admin/deleteUser`, { userId: record.id })
+    Axios.post(`http://192.168.254.158:5001/admin/deleteUser`, { userId: record.id })
       .then((response) => {
         const db = getFirestore();
         const seekerCollection = collection(db, "seekers");
@@ -375,7 +375,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
       const userData = {
         email: record.email
       }
-      Axios.patch('http://192.168.1.10:5000/admin/unsuspendUser', userData)
+      Axios.patch('http://192.168.254.158:5001/admin/unsuspendUser', userData)
         .then((response) => {
           alert('User unsuspended successfully');
           setUnsuspendUser(true);
@@ -443,14 +443,14 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
     const { email, phone, address } = userDetails;
 
     return (
-      <div className="user-details-wrapper">
-        <div className='tableRow'>
+      <div className="user-details-wrapper1" style={{fontWeight: 'bold'}}>
+        <div className='tableRow1' style={{backgroundColor: '#ededed', padding: '10px 15px', borderRadius: 15, marginBottom: 10}}>
           Email:&nbsp;<span>{email}</span>
         </div>
-        <div className='tableRow'>
+        <div className='tableRow1' style={{backgroundColor: '#ededed', padding: '10px 15px', borderRadius: 15, marginBottom: 10}}>
           Phone:&nbsp;<span>{phone}</span>
         </div>
-        <div className='tableRow'>
+        <div className='tableRow1' style={{backgroundColor: '#ededed', padding: '10px 15px', borderRadius: 15, marginBottom: 10}}>
           Address:&nbsp;<span>{address}</span>
         </div>
       </div>
@@ -459,9 +459,9 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
 
   function UserDetailCard({ title, value }) {
     return (
-      <div className="userDetailCard">
-        <div className="userDetailCardTitle">{title}</div>
-        <div className="userDetailCardValue">{value}</div>
+      <div className="userDetailCard1" style={{ borderRadius: 10, width: '25%', height: 200, padding: 20, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#ededed'}}>
+        <div className="userDetailCardTitle1" style={{fontWeight: 'bold', fontSize: 24, textAlign: 'center'}}>{title}</div>
+        <div className="userDetailCardValue1" style={{fontWeight: 'bolder', fontSize: 64, color: '#266F92'}}>{value}</div>
       </div>
     );
   }
@@ -471,43 +471,45 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
   return (
     <div>
       {selectedUser && (
-        <div>
-          <div className="profileHeader">
+        <div className='selectedSeeker1' style={{padding: 20}}>
+          <div className="profileHeader1" style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', weight: '100%', backgroundColor: '#266f92', padding: 15, margin: 0, borderTopLeftRadius: 10, borderTopRightRadius: 10}}>
             {/* Back button */}
-            <div className="back-button" onClick={handleCloseProfile}>
-              <FaAngleLeft />
+            <div className='profileHeaderLeft1' style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0, margin: 0}}>
+            <div className="back-button1" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 0, margin:0}} onClick={handleCloseProfile}>
+              <FaAngleLeft style={{width: 32, height: 32, padding: 0, margin:0}}/>
             </div>
             {/* Profile picture */}
-            <div className="profile-picture-container">
-              <img className="profile-picture" src={selectedUser.profileImage} alt="Profile" />
+            <div className="profile-picture-container1" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderColor: '2px solid white', padding: 0, margin: 0}}>
+              <img className="profile-picture1" src={selectedUser.profileImage} alt="Profile" style={{width: 75, height: 75,  borderRadius: '50%', border: '2px solid white'}}/>
             </div>
             {/* Render detailed user profile details here */}
-            <div>
-              <p className="profile-username">{selectedUser.fullName}</p>
+            <div style={{padding: 10, margin: 0, fontWeight: 'bold', fontSize: 28}}>
+              <p className="profile-username1" style={{padding: 0, margin: 0, }}>{selectedUser.fullName}</p>
               {/* Star rating frame */}
 
               {/* Add more details as needed */}
             </div>
+            </div>
 
             {/* Profile actions */}
-            <div className="profile-actions">
+            <div className="profile-actions1">
               {renderActions(selectedUser, selectedUser)}
             </div>
 
           </div>
-          <div className="profileBody">
-            <div className='leftSide'>
-              <div classname='userDetailsContainer'>
+          <div className="profileBody1" style={{display: 'flex', flexDirection: 'row', backgroundColor: '#CFDFE7', color: 'black', padding: 15, margin: 0, gap: 15, borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}>
+            <div className='leftSide1' style={{flex: 3, backgroundColor: 'white', padding: 10, borderRadius: 10}}>
+              <div classname='userDetailsContainer1'>
                 <UserDetails userDetails={selectedUser} />
               </div>
-              <div className="userDetailCardsContainer">
+              <div className="userDetailCardsContainer1" style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', gap: 10}}>
                 <UserDetailCard title={"Services Availed"} value={selectedUser.servicesAvailed} />
                 <UserDetailCard title={"Reports Received"} value={selectedUser.reportsReceived} />
                 <UserDetailCard title={"Violation Record"} value={selectedUser.violationRecord} />
               </div>
             </div>
-            <div class="verticalLine"></div>
-            <div className='rightSide'>
+            {/* <hr class="verticalLine1" style={{width: 1, height: '100%', backgroundColor: 'black', border: 'none'}}/> */}
+            <div className='rightSide1' style={{flex: 2, backgroundColor: 'white', padding: 10, borderRadius: 10, fontWeight: 'bold'}}>
               Preferred Services:
             </div>
           </div>

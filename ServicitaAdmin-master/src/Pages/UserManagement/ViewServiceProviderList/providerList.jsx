@@ -187,7 +187,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
             violationRecord: data.violationRecord || 0,
             services: data.services || [],
           };
-          const response = await Axios.get(`http://192.168.1.10:5000/admin/getUser/${doc.id}`);
+          const response = await Axios.get(`http://192.168.254.158:5001/admin/getUser/${doc.id}`);
           const userData = response.data.data;
           providerInfo.profileImage = userData.profileImage;
           providerInfo.email = userData.email;
@@ -316,7 +316,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
   //         services: data.services || [],
 
   //       };
-  //       const response = await Axios.get(`http://192.168.1.10:5000/admin/getUser/${doc.id}`);
+  //       const response = await Axios.get(`http://192.168.254.158:5001/admin/getUser/${doc.id}`);
   //       const userData = response.data.data;
   //       updatedUser.profileImage = userData.profileImage;
   //       updatedUser.email = userData.email;
@@ -557,7 +557,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
         userId: record.id,
         action: action
       }
-      Axios.patch('http://192.168.1.10:5000/admin/suspendUser', userData)
+      Axios.patch('http://192.168.254.158:5001/admin/suspendUser', userData)
         .then((response) => {
           alert('User suspended successfully');
         }
@@ -582,7 +582,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
     const userData = {
       userId: record.id
     };
-    Axios.post(`http://192.168.1.10:5000/admin/deleteUser`, userData)
+    Axios.post(`http://192.168.254.158:5001/admin/deleteUser`, userData)
       .then((response) => {
         const db = getFirestore();
         const providerCollection = collection(db, "providers");
@@ -624,7 +624,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       const userData = {
         email: record.email
       }
-      Axios.patch('http://192.168.1.10:5000/admin/unsuspendUser', userData)
+      Axios.patch('http://192.168.254.158:5001/admin/unsuspendUser', userData)
         .then((response) => {
           alert('User unsuspended successfully');
           setUnsuspendUser(true);
