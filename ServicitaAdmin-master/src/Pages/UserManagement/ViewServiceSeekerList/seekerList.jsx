@@ -52,7 +52,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
             reportsReceived: data.reportsReceived || 0,
             violationRecord: data.violationRecord || 0,
           };
-          const response = await Axios.get(`http://192.168.254.158:5001/admin/getUser/${doc.id}`);
+          const response = await Axios.get(`http://192.168.1.4:5001/admin/getUser/${doc.id}`);
           const userData = response.data.data;
           seekerInfo.profileImage = userData.profileImage;
           seekerInfo.email = userData.email;
@@ -155,7 +155,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
   //         reportsReceived: data.reportsReceived || 0,
   //         violationRecord: data.violationRecord || 0,
   //       };
-  //       const response = await Axios.get(`http://192.168.254.158:5001/admin/getUser/${doc.id}`);
+  //       const response = await Axios.get(`http://192.168.1.4:5001/admin/getUser/${doc.id}`);
   //       const userData = response.data.data;
   //       updatedUser.profileImage = userData.profileImage;
   //       updatedUser.email = userData.email;
@@ -328,7 +328,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
       if (typeof action !== 'number') {
         throw new Error('Action must be a number');
       }
-      Axios.patch('http://192.168.254.158:5001/admin/suspendUser', userData)
+      Axios.patch('http://192.168.1.4:5001/admin/suspendUser', userData)
         .then((response) => {
           alert('User suspended successfully');
         }
@@ -338,6 +338,8 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
         });
     } catch (error) {
       console.error('Error suspending user: ', error);
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -351,7 +353,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
 
   const handleDelete = (record) => {
     console.log(record.id)
-    Axios.post(`http://192.168.254.158:5001/admin/deleteUser`, { userId: record.id })
+    Axios.post(`http://192.168.1.4:5001/admin/deleteUser`, { userId: record.id })
       .then((response) => {
         const db = getFirestore();
         const seekerCollection = collection(db, "seekers");
@@ -371,11 +373,12 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
   }
 
   const handleUnsuspend = (record) => {
+    setLoading(true)
     try {
       const userData = {
         email: record.email
       }
-      Axios.patch('http://192.168.254.158:5001/admin/unsuspendUser', userData)
+      Axios.patch('http://192.168.1.4:5001/admin/unsuspendUser', userData)
         .then((response) => {
           alert('User unsuspended successfully');
           setUnsuspendUser(true);
@@ -383,8 +386,11 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
         .catch((error) => {
           console.error('Error unsuspending user: ', error);
         });
+        
     } catch (error) {
       console.error('Error unsuspending user: ', error);
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -459,7 +465,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
 
   function UserDetailCard({ title, value }) {
     return (
-      <div className="userDetailCard1" style={{ borderRadius: 10, width: '25%', height: 200, padding: 20, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#ededed'}}>
+      <div className="userDetailCard1" style={{ borderRadius: 10, height: 200, padding: '20px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#ededed'}}>
         <div className="userDetailCardTitle1" style={{fontWeight: 'bold', fontSize: 24, textAlign: 'center'}}>{title}</div>
         <div className="userDetailCardValue1" style={{fontWeight: 'bolder', fontSize: 64, color: '#266F92'}}>{value}</div>
       </div>
@@ -498,7 +504,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
 
           </div>
           <div className="profileBody1" style={{display: 'flex', flexDirection: 'row', backgroundColor: '#CFDFE7', color: 'black', padding: 15, margin: 0, gap: 15, borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}>
-            <div className='leftSide1' style={{flex: 3, backgroundColor: 'white', padding: 10, borderRadius: 10}}>
+            <div className='leftSide1' style={{flex: 2, backgroundColor: 'white', padding: 10, borderRadius: 10}}>
               <div classname='userDetailsContainer1'>
                 <UserDetails userDetails={selectedUser} />
               </div>

@@ -38,7 +38,7 @@ const textCenter = (selectedUser) => ({
     const text = selectedUser.rating;
     //? `${selectedUser.rating}` : `${average.toFixed(2)}`;
 
-    const fontSize = 80;
+    const fontSize = 70;
     const centerX = (chartArea.left + chartArea.right) / 2;
     const centerY = (chartArea.top + chartArea.bottom) / 2;
 
@@ -187,7 +187,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
             violationRecord: data.violationRecord || 0,
             services: data.services || [],
           };
-          const response = await Axios.get(`http://192.168.254.158:5001/admin/getUser/${doc.id}`);
+          const response = await Axios.get(`http://192.168.1.4:5001/admin/getUser/${doc.id}`);
           const userData = response.data.data;
           providerInfo.profileImage = userData.profileImage;
           providerInfo.email = userData.email;
@@ -316,7 +316,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
   //         services: data.services || [],
 
   //       };
-  //       const response = await Axios.get(`http://192.168.254.158:5001/admin/getUser/${doc.id}`);
+  //       const response = await Axios.get(`http://192.168.1.4:5001/admin/getUser/${doc.id}`);
   //       const userData = response.data.data;
   //       updatedUser.profileImage = userData.profileImage;
   //       updatedUser.email = userData.email;
@@ -400,7 +400,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       >
         <span
           style={{
-            textAlign: 'center',
+            textAlign: 'left',
             textDecoration: 'none', // Remove underline by default
             color: 'inherit', // Use the default text color
             fontSize: '20rm',
@@ -433,7 +433,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
     >
       <span
         style={{
-          textAlign: 'center',
+          textAlign: 'left',
           textDecoration: 'none', // Remove underline by default
           color: 'inherit', // Use the default text color
           fontSize: '15px',
@@ -450,27 +450,28 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
   );
 
   const renderRating = (text, record) => (
-    <div
-      style={{ display: 'flex', justifyContent: 'center', cursor: 'pointer' }}
-      onClick={() => handleItemClick(record)}
+  <div
+    style={{ textAlign: 'left', display: 'flex', justifyContent: 'flex-start', cursor: 'pointer' }} // Use 'flex-start' to justify content to the left
+    onClick={() => handleItemClick(record)}
+  >
+    <span
+      style={{
+        textAlign: 'left',
+        textDecoration: 'none', // Remove underline by default
+        color: 'inherit', // Use the default text color
+        fontSize: '15px',
+        whiteSpace: 'normal', // Allow text to wrap
+        wordWrap: 'break-word', // Break long words
+      }}
+      onMouseEnter={(e) => { e.target.style.textDecoration = 'underline'; e.target.style.color = '#75B9D9'; }} // Underline on hover
+      onMouseLeave={(e) => { e.target.style.textDecoration = 'none'; e.target.style.color = 'black'; }} // Remove underline when not hovered
+      onClick={(e) => e.preventDefault()} // Prevent default click behavior
     >
-      <span
-        style={{
-          textAlign: 'center',
-          textDecoration: 'none', // Remove underline by default
-          color: 'inherit', // Use the default text color
-          fontSize: '15px',
-          whiteSpace: 'normal', // Allow text to wrap
-          wordWrap: 'break-word', // Break long words
-        }}
-        onMouseEnter={(e) => { e.target.style.textDecoration = 'underline'; e.target.style.color = '#75B9D9'; }} // Underline on hover
-        onMouseLeave={(e) => { e.target.style.textDecoration = 'none'; e.target.style.color = 'black'; }} // Remove underline when not hovered
-        onClick={(e) => e.preventDefault()} // Prevent default click behavior
-      >
-        {"Rating: " + text}
-      </span>
-    </div>
-  );
+      {"Rating: " + text}
+    </span>
+  </div>
+);
+
   
   
 
@@ -535,7 +536,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       }
     }
 
-    return <div className="star-rating">{stars}</div>;
+    return <div className="star-rating1" style={{display: 'flex', width: 90}}>{stars}</div>;
   };
 
 
@@ -557,7 +558,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
         userId: record.id,
         action: action
       }
-      Axios.patch('http://192.168.254.158:5001/admin/suspendUser', userData)
+      Axios.patch('http://192.168.1.4:5001/admin/suspendUser', userData)
         .then((response) => {
           alert('User suspended successfully');
         }
@@ -582,7 +583,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
     const userData = {
       userId: record.id
     };
-    Axios.post(`http://192.168.254.158:5001/admin/deleteUser`, userData)
+    Axios.post(`http://192.168.1.4:5001/admin/deleteUser`, userData)
       .then((response) => {
         const db = getFirestore();
         const providerCollection = collection(db, "providers");
@@ -624,7 +625,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       const userData = {
         email: record.email
       }
-      Axios.patch('http://192.168.254.158:5001/admin/unsuspendUser', userData)
+      Axios.patch('http://192.168.1.4:5001/admin/unsuspendUser', userData)
         .then((response) => {
           alert('User unsuspended successfully');
           setUnsuspendUser(true);
@@ -641,14 +642,14 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
     const { email, phone, address } = userDetails;
 
     return (
-      <div className="user-details-wrapper">
-        <div className='tableRow'>
+      <div className="user-details-wrapper1" style={{fontWeight: 'bold'}}>
+        <div className='tableRow1' style={{backgroundColor: '#ededed', padding: '10px 15px', borderRadius: 15, marginBottom: 10}}>
           Email:&nbsp;<span>{email}</span>
         </div>
-        <div className='tableRow'>
+        <div className='tableRow1' style={{backgroundColor: '#ededed', padding: '10px 15px', borderRadius: 15, marginBottom: 10}}>
           Phone:&nbsp;<span>{phone}</span>
         </div>
-        <div className='tableRow'>
+        <div className='tableRow1' style={{backgroundColor: '#ededed', padding: '10px 15px', borderRadius: 15, marginBottom: 10}}>
           Address:&nbsp;<span>{address}</span>
         </div>
       </div>
@@ -657,9 +658,9 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
 
   function UserDetailCard({ title, value }) {
     return (
-      <div className="ProviderDetailCard">
-        <div className="ProviderDetailCardTitle">{title}</div>
-        <div className="ProviderDetailCardValue">{value}</div>
+      <div className="userDetailCard1" style={{ borderRadius: 10, padding: '20px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#ededed'}}>
+        <div className="userDetailCardTitle1" style={{fontWeight: 'bold', fontSize: 24, textAlign: 'center'}}>{title}</div>
+        <div className="userDetailCardValue1" style={{fontWeight: 'bolder', fontSize: 64, color: '#266F92'}}>{value}</div>
       </div>
     );
   }
@@ -676,106 +677,109 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
 
   return (
     <div>
-
       {selectedUser && (
-        <div>
-          <div className="profileHeader">
+        <div className='selectedSeeker1' style={{padding: 20}}>
+          <div className="profileHeader1" style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', weight: '100%', backgroundColor: '#266f92', padding: 15, margin: 0, borderTopLeftRadius: 10, borderTopRightRadius: 10}}>
+
             {/* Back button */}
-            <div className="back-button" onClick={handleCloseProfile}>
-              <FaAngleLeft />
+            <div className='profileHeaderLeft1' style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 0, margin: 0}}>
+            <div className="back-button1" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 0, margin:0}} onClick={handleCloseProfile}>
+              <FaAngleLeft style={{width: 32, height: 32, padding: 0, margin:0}}/>
             </div>
             {/* Profile picture */}
-            <div className="profile-picture-container">
-              <img className="profile-picture" src={selectedUser.profileImage} alt="Profile" />
+            <div className="profile-picture-container1" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', borderColor: '2px solid white', padding: 0, margin: 0}}>
+              <img className="profile-picture1" src={selectedUser.profileImage} alt="Profile" style={{width: 75, height: 75,  borderRadius: '50%', border: '2px solid white'}}/>
             </div>
             {/* Render detailed user profile details here */}
-            <div>
-              <p className="profile-username">{selectedUser.fullName}</p>
-              {/* Star rating frame */}
+            <div style={{padding: 10, margin: 0, fontWeight: 'bold', fontSize: 28}}>
+              <p className="profile-username1" style={{padding: 0, margin: 0, }}>{selectedUser.fullName}</p>              {/* Star rating frame */}
               {renderStarRating(selectedUser.rating)}
               {/* Add more details as needed */}
             </div>
+            </div>
 
             {/* Profile actions */}
-            <div className="profile-actions">
+            <div className="profile-actions1">
               {renderActions(selectedUser, selectedUser)}
             </div>
 
           </div>
-          <div className="profileBody" style={{display: 'flex', flexDirection: 'row'}}>
-            <div className='leftSide'>
+          <div className="profileBody1" style={{display: 'flex', flexDirection: 'row', backgroundColor: '#CFDFE7', color: 'black', padding: 15, margin: 0, gap: 15, borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}>
+            <div className='leftSide1' style={{flex: 2, backgroundColor: 'white', padding: 10, borderRadius: 10}}>
               <UserDetails userDetails={selectedUser} />
-              <div className='ServicesOffered'>Services Offered:
-                {selectedUser.services.map((service, index) => (
-                  <div key={index} className='ServicesOfferedList' onClick={() => handleServiceClick(service)}>
-                    {service.name} ({service.serviceType})
-                  </div>
-                  ))
-                }
+              <div className='ServicesOffered1'style={{padding: '0px 5px', fontWeight: 'bold'}} >Services Offered:
+                <div style={{padding: 10, overflowY: 'auto', maxHeight: 200, fontWeight: 'normal'}}>
+                  {selectedUser.services.map((service, index) => (
+                    <div key={index} className='ServicesOfferedList1' style={{margin: 10, backgroundColor: 'white', padding: '5px 10px', borderRadius: 10, border: '1px solid #002F45'}} onClick={() => handleServiceClick(service)}>
+                      {service.name} ({service.serviceType})
+                    </div>
+                    ))
+                  }
+                </div>
               </div>
             </div>
 
-            <div class="verticalLine"></div>
+            {/* <div class="verticalLine"></div> */}
             
-            <div className='rightSide' style={{display: 'flex', flexDirection: 'column', overflowY: 'auto', paddingRight: '10px'}}>
-              <div className="userDetailCardsContainerProvider">
+            <div className='rightSide1' style={{flex: 3, height: '50vh', backgroundColor: 'white', padding: 10, borderRadius: 10, fontWeight: 'bold', overflowY: 'auto'}}>              
+              <div className="userDetailCardsContainer1" style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', gap: 10, marginBottom: 20}}>
                 <UserDetailCard title={"Completed Services"} value={selectedUser.completedServices} />
                 <UserDetailCard title={"Reports Received"} value={selectedUser.reportsReceived} />
                 <UserDetailCard title={"Violation Record"} value={selectedUser.violationRecord} />
               </div>
-              <div className='Performance' style={{alignItems:'center', display:'flex', flexDirection:'column', padding: '20px', paddingTop: '10px'}}>
-                
-  <div style={{backgroundColor: 'white', width:'100%', marginBottom: '0px', textAlign: 'center'}}>
-    <div className='customerRatingLabel'>Customer Rating</div>
-    <div style={{ display: 'flex', flexDirection: 'column', justifyItems: 'center', alignItems: 'center', padding: '10px' }}>
-  {selectedUser.ratingCount !== 0 ? (
-    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-      <PieGraph selectedUser={selectedUser} />
-      <div className='Legend' style={{ display: 'flex', flexDirection: 'column', margin: '20px', width: '100%', padding: '10px', marginTop: '10px' }}>
-        <div className='up' style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', gap: '10px' }}>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <div style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: '#00365B', marginRight: '3px' }}></div>
-            <div>5 stars</div>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <div style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: '#004E84', marginRight: '3px' }}></div>
-            <div>4 stars</div>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <div style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: '#0070C8', marginRight: '3px' }}></div>
-            <div>3 stars</div>
-          </div>
-        </div>
-        <div className='down' style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <div style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: '#76A8D5', marginRight: '3px' }}></div>
-            <div>2 stars</div>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <div style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: '#CFDBE7', marginRight: '3px' }}></div>
-            <div>1 star</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  ) : (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '270px', height: '270px', borderRadius: '50%', backgroundColor: 'gray', margin: '10px', marginBottom:'30px'}}>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '170px', height: '170px', borderRadius: '50%', backgroundColor: 'white', color: 'black', fontSize: '18px' }}>
-        No rating yet
-      </div>
-    </div>
-  )}
-</div>
 
-  </div>
-  <div style={{backgroundColor: 'white', width:'100%', height:'300px', margin: '20px', textAlign: 'center'}}>
-    <div className='customerRatingLabel'>Response Time by Weekday</div>
-    <div style={{display: 'grid', justifyItems:'center', alignItems: 'center', padding: '20px', paddingTop: '20px'}}>
-      <BarGraph />
-    </div>
-  </div>
-</div>
-
+              <div className='Performance1' style={{alignItems:'center', display:'flex', flexDirection:'column', padding: '0px 5px'}}>
+                {/* Rating */}
+                <div style={{backgroundColor: '#ededed', width:'100%', textAlign: 'center', borderRadius: 10, }}>
+                  <div className='customerRatingLabel' style={{borderRadius: 10}}>Customer Rating</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', justifyItems: 'center', alignItems: 'center', padding: '10px' }}>
+                  {selectedUser.ratingCount !== 0 ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                    <PieGraph selectedUser={selectedUser} />
+                    <div className='Legend' style={{ display: 'flex', flexDirection: 'column', width: '100%', padding: '15px 10px', gap: 5 }}>
+                      <div className='up' style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', gap: '10px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                          <div style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: '#00365B', marginRight: '3px' }}></div>
+                          <div>5 stars</div>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                          <div style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: '#004E84', marginRight: '3px' }}></div>
+                          <div>4 stars</div>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                          <div style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: '#0070C8', marginRight: '3px' }}></div>
+                          <div>3 stars</div>
+                        </div>
+                      </div>
+                      <div className='down' style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                          <div style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: '#76A8D5', marginRight: '3px' }}></div>
+                          <div>2 stars</div>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                          <div style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: '#CFDBE7', marginRight: '3px' }}></div>
+                          <div>1 star</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  ) : (
+                      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '270px', height: '270px', borderRadius: '50%', backgroundColor: 'gray', margin: '10px', marginBottom:'30px'}}>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '170px', height: '170px', borderRadius: '50%', backgroundColor: 'white', color: 'black', fontSize: '18px' }}>
+                          No rating yet
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                {/* Response Time */}
+                <div style={{backgroundColor: '#ededed', width:'100%', borderRadius: 10, marginTop: 40, padding: '15px 0px', margin: '20px', textAlign: 'center'}}>
+                  <div className='customerRatingLabel'>Response Time by Weekday</div>
+                  <div style={{display: 'grid', justifyItems:'center', alignItems: 'center', padding: '20px', paddingTop: '20px'}}>
+                    <BarGraph />
+                  </div>
+                </div>
+              </div>
             </div>
 
           </div>
@@ -836,20 +840,43 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
 
       {showServiceOverlay && selectedService && (
         <div className="serviceDetailsOverlay">
-          <div className="serviceDetails">
+          <div className="serviceDetails" style={{backgroundColor: 'white', border: '1px solid #002F45', color: '#002F45'}}>
             <div className="serviceDetailsHeader">
-              <div className="back-button" onClick={() => setShowServiceOverlay(false)}>
+
+              <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+              <div className="back-button" style={{color: '#002F45',}} onClick={() => setShowServiceOverlay(false)}>
                 <FaAngleLeft />
               </div>
-              <div className="serviceDetailsTitle">{selectedService.name}</div>
+              <div>
+                <div className="serviceName1" style={{fontSize: 32, fontWeight: 'bold'}}>{selectedService.name}</div>
+                <div className="serviceType1">{selectedService.serviceType}</div>
+              </div>
+              </div>
+              
+
+              {/* <div>
+
+              </div> */}
+
+
             </div>
             <div className="serviceDetailsBody">
-              <hr></hr>
-              <div className="serviceDetailsDescription">{selectedService.description}</div>
-              <hr></hr>
-              <div className="serviceDetailsPrice"> ₱{selectedService.price.min} - ₱{selectedService.price.max}</div>
+              <hr style={{backgroundColor: '#002F45', border: 'none', height: 1}}></hr>
+
+              <div style={{display: 'flex'}}>
+                <div style={{flex: 0.6, fontWeight: 'bolder', fontSize: 18}}>Service Description</div>
+                <div className="serviceDetailsDescription" style={{flex: 1, textAlign: 'justify'}}>{selectedService.description}</div>
+              </div>
+
+              <hr style={{backgroundColor: '#002F45', border: 'none', height: 1}}></hr>
+
+              <div style={{display: 'flex'}}>
+                <div style={{flex: 0.6, fontWeight: 'bolder', fontSize: 18}}>Service Fee</div>
+                <div className="serviceDetailsPrice" style={{flex: 1, textAlign: 'justify', fontWeight: 'normal'}}> ₱{selectedService.price.min} - ₱{selectedService.price.max}</div>
+              </div>
+
               {/* Design a week schedule regarding the availability displaying all 7 days with start time and end time */}
-              <hr></hr>
+              <hr style={{backgroundColor: '#002F45', border: 'none', height: 1}}></hr>
               <div className="serviceDetailsSchedule">
                 {selectedService.availability.map((day, index) => (
                   <div>

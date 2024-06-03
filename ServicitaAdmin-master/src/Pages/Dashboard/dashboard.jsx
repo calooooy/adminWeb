@@ -161,7 +161,7 @@ function TopPerforming() {
 						rating: data.rating || 0,
 						completedServices: data.completedServices || 0
 					};
-					const response = await Axios.get(`http://192.168.254.158:5001/admin/getUser/${doc.id}`);
+					const response = await Axios.get(`http://172.16.4.26:5000/admin/getUser/${doc.id}`);
 					const userData = response.data.data;
 					// console.log(userData);
 					providerInfo.profileImage = userData.profileImage;

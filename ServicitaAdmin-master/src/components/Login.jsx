@@ -11,7 +11,7 @@ const Login = ({ onLogin, adminNickname, adminFullname, adminId }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await Axios.post('http://192.168.254.158:5001/admin/login', {
+      const response = await Axios.post('http://192.168.1.4:5001/admin/login', {
         username: username,
         password: password,
       });

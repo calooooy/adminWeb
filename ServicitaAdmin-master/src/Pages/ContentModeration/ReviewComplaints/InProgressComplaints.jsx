@@ -18,7 +18,7 @@ function InProgressComplaints() {
 		const fetchReports = async () => {
 			try {
 
-				const response = await Axios.get('http://192.168.254.158:5001/report/getReports');
+				const response = await Axios.get('http://192.168.1.4:5001/report/getReports');
 				const reportsData = response.data;
 
 				// Initialize array to store report info
@@ -28,8 +28,8 @@ function InProgressComplaints() {
 				for (const report of reportsData) {
 					var reporterDoc, reportedDoc
 
-					const reporterResponse = await Axios.get(`http://192.168.254.158:5001/admin/getUser/${report.reporterId}`); //for reporter profileImage
-					const reportedResponse = await Axios.get(`http://192.168.254.158:5001/admin/getUser/${report.reportedId}`); //for reported role
+					const reporterResponse = await Axios.get(`http://192.168.1.4:5001/admin/getUser/${report.reporterId}`); //for reporter profileImage
+					const reportedResponse = await Axios.get(`http://192.168.1.4:5001/admin/getUser/${report.reportedId}`); //for reported role
 
 					const reporterSuspended = reporterResponse.data.data.suspension.isSuspended
 					const reportedSuspended = reportedResponse.data.data.suspension.isSuspended
@@ -173,7 +173,7 @@ function InProgressComplaints() {
 		setUpdating(true)
 
 		try{
-            await Axios.put(`http://192.168.254.158:5001/report/updateReport/${record.id}`, {
+            await Axios.put(`http://192.168.1.4:5001/report/updateReport/${record.id}`, {
                 status: 'RESOLVED'
               });
 
@@ -225,7 +225,7 @@ function InProgressComplaints() {
 		  const userData = {
 			email: record.reporterEmail
 		  }
-		  Axios.patch('http://192.168.254.158:5001/admin/unsuspendUser', userData)
+		  Axios.patch('http://192.168.1.4:5001/admin/unsuspendUser', userData)
 			.then((response) => {
 			  alert('User unsuspended successfully');
 			  setUnsuspendUser(true);
@@ -245,7 +245,7 @@ function InProgressComplaints() {
 		  const userData = {
 			email: record.reportedEmail
 		  }
-		  Axios.patch('http://192.168.254.158:5001/admin/unsuspendUser', userData)
+		  Axios.patch('http://192.168.1.4:5001/admin/unsuspendUser', userData)
 			.then((response) => {
 			  alert('User unsuspended successfully');
 			  setUnsuspendUser(true);
@@ -325,7 +325,7 @@ function InProgressComplaints() {
 			userId: type === 'reporter' ? record.reporterId : record.reportedId,
 			action: action
 		  }
-		  Axios.patch('http://192.168.254.158:5001/admin/suspendUser', userData)
+		  Axios.patch('http://192.168.1.4:5001/admin/suspendUser', userData)
 			.then((response) => {
 			  alert('User suspended successfully');
 			}
@@ -333,7 +333,7 @@ function InProgressComplaints() {
 			.catch((error) => {
 			  console.error('Error suspending user: ', error);
 			});
-            await Axios.put(`http://192.168.254.158:5001/report/updateReport/${record.id}`, {
+            await Axios.put(`http://192.168.1.4:5001/report/updateReport/${record.id}`, {
                 status: 'IN PROGRESS'
               });
 			setChanges(true)
@@ -355,75 +355,67 @@ function InProgressComplaints() {
 	// );
 
 	return (
-		<div className='reviewComplaints'>
-			<div>
-				<h1 className='DashboardHeader'>In Progress Complaints</h1>
-				{/* <hr className='Divider' style={{ width: '1185px' }} /> */}
-			</div>
-			<div className='message-container'>
-			<div className='reviewComplaintsRender'>
-				{showSpinner ? (
-					<div className='showSpinner'>
-						<Spin size="large" />
-					</div>
-				) : (
-				filterByStatus.length === 0 ? (
-				<div>No current In Progress Complaints to review</div>
+		<div className='reviewComplaints1'>
+		  <div>
+			<h1 className='DashboardHeader'>In Progress Complaints</h1>
+		  </div>
+		  <div className='message-container'>
+			{showSpinner ? (
+			  <div className='showSpinner'>
+				<Spin size="large" />
+			  </div>
 			) : (
-				<div className='complaints-scroller'>
-					{changes ? (
-						<div className='updateSpinner'>
-							<Spin size="large" />
-						</div>
-						) : (
-							<>
-							<div className='complaintsCount'>
-							In Progress Complaints to Review: {filterByStatus.length}
-							</div>
-					{filterByStatus.map((reportInfoData, index) => (
-						<div key={reportInfoData.id} className='complaintsCard'>
-							<div key={reportInfoData.id} className='complaintsCardContent'>
-								<div style={{ padding: '20px' }}>
-									<div className='complaintsHeader'>
-										<div className='complaintsLeft'>
-											<div className='serviceprovider' style={{ display: 'flex', alignItems: 'center' }}>
-												<img alt="cover" src={reportInfoData.reporterProfileImage} style={{ width: '70px', height: '70px', borderRadius: '50%', border: '3px solid #7bc1e1', marginTop: '10px' }}></img>
-												<div>
-													<p className='reporter-Name'>{reportInfoData.reporterName}</p>
-													<p className='report-date'>{reportInfoData.createdAt.toLocaleString()}</p>
-												</div>
-											</div>
-										</div>
-										<div className='serviceRight'>
-											{renderActions(reportInfoData)}
-											{/* <Dropdown overlay={() => renderActio(reportInfoData)} trigger={['click']}>
-												<FaEllipsisV className='complaints-ellipsis'/>
-											</Dropdown> */}
-										</div>
+			  filterByStatus.length === 0 ? (
+				<div style={{padding: '10px 0px 0px 10px'}} >No current In Progress Complaints to review</div>
+			  ) : (
+				<div className='complaints-scroller1'>
+				  {changes ? (
+					<div className='updateSpinner'>
+					  <Spin size="large" />
+					</div>
+				  ) : (
+					<>
+					  <div className='complaintsCount1' style={{padding: '10px 0px 0px 10px'}}>
+						In Progress Complaints to Review: {filterByStatus.length}
+					  </div>
+					  <div className='reviewComplaintsRender1'>
+						{filterByStatus.map((reportInfoData) => (
+						  <div key={reportInfoData.id} className='complaintsCard1'>
+							<div className='complaintsCardContent1'>
+							  <div style={{ padding: '20px' }}>
+								<div className='complaintsHeader1'>
+								  <div className='complaintsLeft1'>
+									<div className='serviceprovider1' style={{ display: 'flex', alignItems: 'center'}}>
+									  <img alt="cover" src={reportInfoData.reporterProfileImage} style={{ width: '70px', height: '70px', borderRadius: '50%', border: '3px solid #002F45', margin: '0px 10px 0px 0px'}}></img>
+									  <div className='nameDate1'>
+										<p className='reporter-Name1' style={{fontSize: 18, fontWeight: 'bold'}}>{reportInfoData.reporterName}</p>
+										<p className='report-date1' style={{fontSize: 12, margin: '3px 0px'}}>{reportInfoData.createdAt.toLocaleString()}</p>
+									  </div>
 									</div>
-									<div className='complaintReason'>{reportInfoData.reason}</div>
-									<div className='bottom-part1'>
-										<div className='reported-user-label' >Reported User: </div>
-										<div className='reported-user-role'>({reportInfoData.reportedRole})</div>
-										<div className='reported-user-name' >{reportInfoData.reportedName}</div>
-										{/* <div className='reported-user-id'>{reportInfoData.reportedId}</div> */}
-									</div>
+								  </div>
+								  <div className='serviceRight1'>
+									{renderActions(reportInfoData)}
+								  </div>
 								</div>
+								<div className='complaintReason1' style={{margin: 10, fontSize: 14, textAlign: 'justify', maxHeight: 150, overflowY: 'auto'}}>{reportInfoData.reason}</div>
+								<div className='bottom-part2' style={{display: 'flex', justifyContent: 'flex-end', gap: 5, fontSize: 12, marginTop: 25}}>
+								  <div className='reported-user-label1'>Reported User: </div>
+								  <div className='reported-user-role1'>({reportInfoData.reportedRole})</div>
+								  <div className='reported-user-name1'>{reportInfoData.reportedName}</div>
+								</div>
+							  </div>
 							</div>
-						</div>
-					))}
-
-
-
-				</>)}
-
+						  </div>
+						))}
+					  </div>
+					</>
+				  )}
+				</div>
+			  )
+			)}
+		  </div>
 		</div>
-			)
-				)}
-			</div>
-			</div>
-		</div> 
-	);
+	  );
 
 }
 export default InProgressComplaints

@@ -869,7 +869,7 @@ label {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
-
+  font-family: 'Quicksand';
   z-index: 9999;
 }
 
@@ -1385,4 +1385,61 @@ label {
 
 .selectedSeeker1 {
   font-family: 'Didact-Gothic';
+}
+
+
+
+
+
+
+
+/* REPORT */
+
+/* Add this to your CSS file or within a <style> tag */
+.reviewComplaints1 {
+}
+
+.reviewComplaintsRender1 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Creates 2 equal columns */
+  gap: 10px; /* Space between grid items */
+  padding: 20px;
+  color: #002F45
+}
+
+.complaintsCard1 {
+  background-color: #ededed;
+  border: 2px solid #002F45;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.complaintsCardContent1 {
+  /* padding: 20px; */
+}
+
+.complaints-scroller1 {
+  overflow-y: auto;
+}
+
+.nameDate1 {
+  
+}
+
+.reporter-Name1 {
+  padding: 0;
+  margin: 0
+}
+
+.report-date1 {
+  padding: 0;
+  margin: 0
+}
+
+.complaintsHeader1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
 }
