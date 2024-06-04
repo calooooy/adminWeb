@@ -4,7 +4,7 @@ const AdminInfo = () => {
     return (
         <div className='adminInfo'>
             <div className="admin">
-                <img src="../public/admin profile.png" alt="wtf" />
+                <img src="/admin profile.png" alt="admin" />
                 <h2>{localStorage.getItem('adminName')}</h2>
             </div>
             <div className="icon">
