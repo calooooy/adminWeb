@@ -43,7 +43,11 @@ function SideMenu() {
           label: "User Management", icon: <UserOutlined style={{ fontSize: '20px' }} />, key: "/home/userManagement", children: [
             { label: "View Service Seeker List", icon: <TeamOutlined style={{ fontSize: '20px' }} />, key: "/home/viewSeekerList" },
             { label: "View Service Provider List", icon: <UsergroupDeleteOutlined style={{ fontSize: '20px' }} />, key: "/home/viewProviderList" },
-            { label: "View Reported Issues", icon: <UsergroupDeleteOutlined style={{ fontSize: '20px' }} />, key: "/home/viewReportedIssues" }
+            { label: "View Reported Issues", icon: <FrownOutlined style={{ fontSize: '20px' }} />, key: "/home/viewReportedIssues", children: [
+              { label: "Pending Issue", icon: <ClockCircleOutlined style={{ fontSize: '20px' }}/>, key: "/home/viewReportedIssues/pendingIssues" },
+              { label: "In Progress Issue", icon: <MonitorOutlined style={{ fontSize: '20px' }}/>, key: "/home/viewReportedIssues/inProgressIssues"},
+              { label: "Resolved Issue", icon: <IssuesCloseOutlined style={{ fontSize: '20px' }}/>, key: "/home/viewReportedIssues/resolvedIssues"}
+            ]}
           ]
         },
         // {

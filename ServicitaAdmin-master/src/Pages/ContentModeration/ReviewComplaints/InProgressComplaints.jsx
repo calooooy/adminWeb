@@ -172,46 +172,13 @@ function InProgressComplaints() {
 		}
 	}
 
-    const handleResolve = async (record) => {
+	const handleResolve = async (record) => {
 		setUpdating(true)
 
 		try{
             await Axios.put(`http://192.168.1.4:5001/report/updateReport/${record.id}`, {
                 status: 'RESOLVED'
               });
-
-			const db = getFirestore();
-			const chatRef = collection(db, 'adminChats');
-			const querySnapshot = getDocs(chatRef);
-			const chatDocs = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-			const chatExistsForReporter = chatDocs.find(chat => chat.users.includes(localStorage.getItem('adminId')) && chat.users.includes(record.reporterId));
-			const chatExistsForReported = chatDocs.find(chat => chat.users.includes(localStorage.getItem('adminId')) && chat.users.includes(record.reportedId));
-
-			if (chatExistsForReporter) {
-				await deleteDoc(doc(db, 'adminChats', chatExistsForReporter.id));
-			}
-
-			if (chatExistsForReported) {
-				await deleteDoc(doc(db, 'adminChats', chatExistsForReported.id));
-			}
-
-			 const imagesToDelete = [];
-
-			 chatDocs.forEach(chat => {
-				 chat.messages.forEach(message => {
-					 if (message.image) {
-						 imagesToDelete.push(message.image);
-					 }
-				 });
-			 });
-	 
-			 const storage = getStorage();
-
-			imagesToDelete.forEach(async (imageUrl) => {
-				const imageRef = ref(storage, imageUrl);
-				await deleteObject(imageRef);
-			});
-
 			setChanges(true)
 			setLoading(true)
 		} catch (error) {
@@ -222,6 +189,57 @@ function InProgressComplaints() {
 			}, 1200);
 		}
 	}
+
+    // const handleResolve = async (record) => {
+	// 	setUpdating(true)
+
+	// 	try{
+    //         await Axios.put(`http://192.168.1.4:5001/report/updateReport/${record.id}`, {
+    //             status: 'RESOLVED'
+    //           });
+
+	// 		const db = getFirestore();
+	// 		const chatRef = collection(db, 'adminChats');
+	// 		const querySnapshot = getDocs(chatRef);
+	// 		const chatDocs = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+	// 		const chatExistsForReporter = chatDocs.find(chat => chat.users.includes(localStorage.getItem('adminId')) && chat.users.includes(record.reporterId));
+	// 		const chatExistsForReported = chatDocs.find(chat => chat.users.includes(localStorage.getItem('adminId')) && chat.users.includes(record.reportedId));
+
+	// 		if (chatExistsForReporter) {
+	// 			await deleteDoc(doc(db, 'adminChats', chatExistsForReporter.id));
+	// 		}
+
+	// 		if (chatExistsForReported) {
+	// 			await deleteDoc(doc(db, 'adminChats', chatExistsForReported.id));
+	// 		}
+
+	// 		 const imagesToDelete = [];
+
+	// 		 chatDocs.forEach(chat => {
+	// 			 chat.messages.forEach(message => {
+	// 				 if (message.image) {
+	// 					 imagesToDelete.push(message.image);
+	// 				 }
+	// 			 });
+	// 		 });
+	 
+	// 		 const storage = getStorage();
+
+	// 		imagesToDelete.forEach(async (imageUrl) => {
+	// 			const imageRef = ref(storage, imageUrl);
+	// 			await deleteObject(imageRef);
+	// 		});
+
+	// 		setChanges(true)
+	// 		setLoading(true)
+	// 	} catch (error) {
+    //         console.error("Error:", error)
+	// 	} finally {
+	// 		setTimeout(() => {
+	// 			setUpdating(false); // Set updating/loading state to false after a delay
+	// 		}, 1200);
+	// 	}
+	// }
 
 	const handleUnsuspendReporter = (record) => {
 		try {
