@@ -17,7 +17,7 @@ function ResolvedComplaints() {
 		const fetchReports = async () => {
 			try {
 
-				const response = await Axios.get('https://servicita-back-end-hazel.vercel.app//report/getReports');
+				const response = await Axios.get('https://servicita-back-end-hazel.vercel.app/report/getReports');
 				const reportsData = response.data.filter(report => {
 					if (report.reportedId != '1') {
 						return report;
@@ -30,8 +30,8 @@ function ResolvedComplaints() {
 				for (const report of reportsData) {
 					var reporterDoc, reportedDoc
 
-					const reporterResponse = await Axios.get(`https://servicita-back-end-hazel.vercel.app//admin/getUser/${report.reporterId}`); //for reporter profileImage
-					const reportedResponse = await Axios.get(`https://servicita-back-end-hazel.vercel.app//admin/getUser/${report.reportedId}`); //for reported role
+					const reporterResponse = await Axios.get(`https://servicita-back-end-hazel.vercel.app/admin/getUser/${report.reporterId}`); //for reporter profileImage
+					const reportedResponse = await Axios.get(`https://servicita-back-end-hazel.vercel.app/admin/getUser/${report.reportedId}`); //for reported role
 
 
 
@@ -121,7 +121,7 @@ function ResolvedComplaints() {
 		setUpdating(true)
 
 		try{
-			await Axios.delete(`https://servicita-back-end-hazel.vercel.app//report/deleteReport/${record.id}`)
+			await Axios.delete(`https://servicita-back-end-hazel.vercel.app/report/deleteReport/${record.id}`)
 			setChanges(true)
 			setLoading(true)
 		} catch (error) {
@@ -188,7 +188,7 @@ function ResolvedComplaints() {
 			userId: record.reportedId,
 			action: action
 		  }
-		  Axios.patch('https://servicita-back-end-hazel.vercel.app//admin/suspendUser', userData)
+		  Axios.patch('https://servicita-back-end-hazel.vercel.app/admin/suspendUser', userData)
 			.then((response) => {
 			  alert('User suspended successfully');
 			}

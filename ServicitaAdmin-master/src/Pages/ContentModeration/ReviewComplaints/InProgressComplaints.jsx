@@ -18,7 +18,7 @@ function InProgressComplaints() {
 		const fetchReports = async () => {
 			try {
 
-				const response = await Axios.get('https://servicita-back-end-hazel.vercel.app//report/getReports');
+				const response = await Axios.get('https://servicita-back-end-hazel.vercel.app/report/getReports');
 				const reportsData = response.data.filter(report => {
 					if (report.reportedId != '1') {
 						return report;
@@ -31,8 +31,8 @@ function InProgressComplaints() {
 				for (const report of reportsData) {
 					var reporterDoc, reportedDoc
 
-					const reporterResponse = await Axios.get(`https://servicita-back-end-hazel.vercel.app//admin/getUser/${report.reporterId}`); //for reporter profileImage
-					const reportedResponse = await Axios.get(`https://servicita-back-end-hazel.vercel.app//admin/getUser/${report.reportedId}`); //for reported role
+					const reporterResponse = await Axios.get(`https://servicita-back-end-hazel.vercel.app/admin/getUser/${report.reporterId}`); //for reporter profileImage
+					const reportedResponse = await Axios.get(`https://servicita-back-end-hazel.vercel.app/admin/getUser/${report.reportedId}`); //for reported role
 
 					const reporterSuspended = reporterResponse.data.data.suspension.isSuspended
 					const reportedSuspended = reportedResponse.data.data.suspension.isSuspended
@@ -176,7 +176,7 @@ function InProgressComplaints() {
 		setUpdating(true)
 
 		try{
-            await Axios.put(`https://servicita-back-end-hazel.vercel.app//report/updateReport/${record.id}`, {
+            await Axios.put(`https://servicita-back-end-hazel.vercel.app/report/updateReport/${record.id}`, {
                 status: 'RESOLVED'
               });
 			setChanges(true)
@@ -194,7 +194,7 @@ function InProgressComplaints() {
 	// 	setUpdating(true)
 
 	// 	try{
-    //         await Axios.put(`https://servicita-back-end-hazel.vercel.app//report/updateReport/${record.id}`, {
+    //         await Axios.put(`https://servicita-back-end-hazel.vercel.app/report/updateReport/${record.id}`, {
     //             status: 'RESOLVED'
     //           });
 
@@ -266,7 +266,7 @@ function InProgressComplaints() {
 		  const userData = {
 			email: record.reportedEmail
 		  }
-		  Axios.patch('https://servicita-back-end-hazel.vercel.app//admin/unsuspendUser', userData)
+		  Axios.patch('https://servicita-back-end-hazel.vercel.app/admin/unsuspendUser', userData)
 			.then((response) => {
 			  alert('User unsuspended successfully');
 			  setUnsuspendUser(true);
@@ -346,7 +346,7 @@ function InProgressComplaints() {
 			userId: type === 'reporter' ? record.reporterId : record.reportedId,
 			action: action
 		  }
-		  Axios.patch('https://servicita-back-end-hazel.vercel.app//admin/suspendUser', userData)
+		  Axios.patch('https://servicita-back-end-hazel.vercel.app/admin/suspendUser', userData)
 			.then((response) => {
 			  alert('User suspended successfully');
 			}
@@ -354,7 +354,7 @@ function InProgressComplaints() {
 			.catch((error) => {
 			  console.error('Error suspending user: ', error);
 			});
-            await Axios.put(`https://servicita-back-end-hazel.vercel.app//report/updateReport/${record.id}`, {
+            await Axios.put(`https://servicita-back-end-hazel.vercel.app/report/updateReport/${record.id}`, {
                 status: 'IN PROGRESS'
               });
 			setChanges(true)

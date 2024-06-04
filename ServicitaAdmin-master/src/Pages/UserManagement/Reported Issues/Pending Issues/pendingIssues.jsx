@@ -17,7 +17,7 @@ function PendingIssues() {
 		const fetchReports = async () => {
 			try {
 
-				const response = await Axios.get('https://servicita-back-end-hazel.vercel.app//report/getReports');
+				const response = await Axios.get('https://servicita-back-end-hazel.vercel.app/report/getReports');
 				const reportsData = response.data.filter(report => {
 					if (report.reportedId == '1') {
 						return report;
@@ -34,8 +34,8 @@ function PendingIssues() {
 
 					console.log(report.reportedId)
 
-					const reporterResponse = await Axios.get(`https://servicita-back-end-hazel.vercel.app//admin/getUser/${report.reporterId}`); //for reporter profileImage
-					// const reportedResponse = await Axios.get(`https://servicita-back-end-hazel.vercel.app//admin/getUser/${report.reportedId}`); //for reported role
+					const reporterResponse = await Axios.get(`https://servicita-back-end-hazel.vercel.app/admin/getUser/${report.reporterId}`); //for reporter profileImage
+					// const reportedResponse = await Axios.get(`https://servicita-back-end-hazel.vercel.app/admin/getUser/${report.reportedId}`); //for reported role
 
 					const db = getFirestore();
 
@@ -122,7 +122,7 @@ function PendingIssues() {
 		setUpdating(true)
 
 		try{
-			await Axios.delete(`https://servicita-back-end-hazel.vercel.app//report/deleteReport/${record.id}`)
+			await Axios.delete(`https://servicita-back-end-hazel.vercel.app/report/deleteReport/${record.id}`)
 			setChanges(true)
 			setLoading(true)
 		} catch (error) {
@@ -143,7 +143,7 @@ function PendingIssues() {
 		setUpdating(true)
 
 		try{
-            await Axios.put(`https://servicita-back-end-hazel.vercel.app//report/updateReport/${record.id}`, {
+            await Axios.put(`https://servicita-back-end-hazel.vercel.app/report/updateReport/${record.id}`, {
                 status: 'IN PROGRESS'
               });
 			setChanges(true)
@@ -245,7 +245,7 @@ function PendingIssues() {
 			userId: record.reportedId,
 			action: action
 		  }
-		  Axios.patch('https://servicita-back-end-hazel.vercel.app//admin/suspendUser', userData)
+		  Axios.patch('https://servicita-back-end-hazel.vercel.app/admin/suspendUser', userData)
 			.then((response) => {
 			  alert('User suspended successfully');
 			}

@@ -119,7 +119,7 @@ const SidebarContent = ({ sortBy, onSort, resetFilters, setSelectedCategory, set
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await Axios.get('https://servicita-back-end-hazel.vercel.app//service/getServices');
+        const response = await Axios.get('https://servicita-back-end-hazel.vercel.app/service/getServices');
         setServices(response.data.data);
       } catch (error) {
         console.error('Error fetching services:', error);
@@ -128,7 +128,7 @@ const SidebarContent = ({ sortBy, onSort, resetFilters, setSelectedCategory, set
 
     const fetchLocations = async () => {
       try {
-        const response = await Axios.get('https://servicita-back-end-hazel.vercel.app//location/getCities');
+        const response = await Axios.get('https://servicita-back-end-hazel.vercel.app/location/getCities');
         setLocations(response.data.data);
       } catch (error) {
         console.error('Error fetching locations:', error);

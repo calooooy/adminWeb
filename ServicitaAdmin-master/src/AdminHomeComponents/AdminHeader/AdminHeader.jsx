@@ -23,13 +23,13 @@ function AdminHeader({ onLogout }) {
                     return;
                 }
 
-                const response = await Axios.get(`https://servicita-back-end-hazel.vercel.app//notifications/getNotifications/${userId}`);
+                const response = await Axios.get(`https://servicita-back-end-hazel.vercel.app/notifications/getNotifications/${userId}`);
                 const notificationsData = response.data.data;
 
                 const notificationInfoData = [];
 
                 for (const notification of notificationsData) {
-                    const otherUserResponse = await Axios.get(`https://servicita-back-end-hazel.vercel.app//admin/getUser/${notification.otherUserId}`);
+                    const otherUserResponse = await Axios.get(`https://servicita-back-end-hazel.vercel.app/admin/getUser/${notification.otherUserId}`);
                     const otherProfileImage = otherUserResponse.data.data.profileImage;
 
                     notificationInfoData.push({

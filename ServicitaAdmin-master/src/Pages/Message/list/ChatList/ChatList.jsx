@@ -41,7 +41,7 @@ const ChatList = ({ setActiveMessage }) => {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await Axios.get(`https://servicita-back-end-hazel.vercel.app//admin/getAdmin/${localStorage.getItem('adminId')}`);
+                const response = await Axios.get(`https://servicita-back-end-hazel.vercel.app/admin/getAdmin/${localStorage.getItem('adminId')}`);
                 const db = getFirestore();
                 const chatRef = collection(db, 'adminChats');
                 const q = query(chatRef, where('users', 'array-contains', response.data.data._id));
