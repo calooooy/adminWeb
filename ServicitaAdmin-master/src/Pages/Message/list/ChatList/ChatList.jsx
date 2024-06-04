@@ -41,7 +41,7 @@ const ChatList = ({ setActiveMessage }) => {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await Axios.get(`http://172.16.4.26:5001/admin/getAdmin/${localStorage.getItem('adminId')}`);
+                const response = await Axios.get(`https://172.16.4.26:5001/admin/getAdmin/${localStorage.getItem('adminId')}`);
                 const db = getFirestore();
                 const chatRef = collection(db, 'adminChats');
                 const q = query(chatRef, where('users', 'array-contains', response.data.data._id));
