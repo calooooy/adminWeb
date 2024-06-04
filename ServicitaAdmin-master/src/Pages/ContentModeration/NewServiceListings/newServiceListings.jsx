@@ -36,7 +36,7 @@ function NewServiceListings() {
 						verified: data.verified,
 						status: data.status
 					};
-					const response = await Axios.get(`http://3.26.59.191:5001/admin/getUser/${data.providerId}`);
+					const response = await Axios.get(`http://172.16.4.26:5001/admin/getUser/${data.providerId}`);
 					const userData = response.data.data;
 					servicesInfo.profileImage = userData.profileImage;
 
@@ -169,7 +169,7 @@ function NewServiceListings() {
 
 	const menu = (record) => (
 		<Menu>
-			<Menu.Item key="message" onClick={() => handleMessage(record)}>Message</Menu.Item>
+			{/* <Menu.Item key="message" onClick={() => handleMessage(record)}>Message</Menu.Item> */}
 			<Menu.Item key="approve" onClick={() => handleApprove(record)}>Approve</Menu.Item>
 			<Menu.Item key="reject" onClick={() => handleReject(record)}>Reject</Menu.Item>
 		</Menu>
@@ -210,7 +210,7 @@ function NewServiceListings() {
 														<div className='serviceContents1' style={{padding: '0px', margin: '0px'}}>
 															<div className='serviceHeader1' style={{margin: '0px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: '0px 10px'}}>
 																<div className='serviceLeft1' style={{padding: '0px', margin: '0px'}}>
-																	<h3 className='serviceName1' style={{padding: '0px', margin: '0px', fontSize: 24}}>{servicesInfo.name}</h3>
+																	<h3 className='serviceName1' style={{padding: '0px', margin: '0px', fontSize: 20}}>{servicesInfo.name}</h3>
 																	<div className='serviceprovider1' style={{ gap: '5px',display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: '0px', margin: '0px'}}>
 																		<img alt="cover" src={servicesInfo.profileImage} style={{ width: '25px', height: '25px', borderRadius: '50%', padding: '0px', margin: '3px 0px', border: '1px solid #1C729A'}} />
 																		<p className='provider-Name1' style={{padding: '0px', margin: '0px', fontSize: 16}}>{servicesInfo.providerName}</p>

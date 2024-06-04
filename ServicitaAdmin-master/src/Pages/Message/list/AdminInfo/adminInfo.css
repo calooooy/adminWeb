@@ -9,7 +9,7 @@
     .admin {
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 10px;
 
         img {
             width: 50px;
