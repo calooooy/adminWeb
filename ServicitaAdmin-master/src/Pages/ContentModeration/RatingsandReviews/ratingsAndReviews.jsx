@@ -33,7 +33,7 @@ function RatingsAndReviews() {
     //                     status: data.status,
     //                     rating: data.rating
     //                 };
-    //                 const response = await Axios.get(`http://3.26.59.191:5001/admin/getUser/${data.providerId}`);
+    //                 const response = await Axios.get(`https://servicita-back-end-hazel.vercel.app//admin/getUser/${data.providerId}`);
     //                 const userData = response.data.data;
     //                 servicesInfo.profileImage = userData.profileImage;
 

@@ -187,7 +187,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
             violationRecord: data.violationRecord || 0,
             services: data.services || [],
           };
-          const response = await Axios.get(`http://3.26.59.191:5001/admin/getUser/${doc.id}`);
+          const response = await Axios.get(`https://servicita-back-end-hazel.vercel.app//admin/getUser/${doc.id}`);
           const userData = response.data.data;
           providerInfo.profileImage = userData.profileImage;
           providerInfo.email = userData.email;
@@ -316,7 +316,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
   //         services: data.services || [],
 
   //       };
-  //       const response = await Axios.get(`http://3.26.59.191:5001/admin/getUser/${doc.id}`);
+  //       const response = await Axios.get(`https://servicita-back-end-hazel.vercel.app//admin/getUser/${doc.id}`);
   //       const userData = response.data.data;
   //       updatedUser.profileImage = userData.profileImage;
   //       updatedUser.email = userData.email;
@@ -558,7 +558,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
         userId: record.id,
         action: action
       }
-      Axios.patch('http://3.26.59.191:5001/admin/suspendUser', userData)
+      Axios.patch('https://servicita-back-end-hazel.vercel.app//admin/suspendUser', userData)
         .then((response) => {
           alert('User suspended successfully');
         }
@@ -583,7 +583,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
     const userData = {
       userId: record.id
     };
-    Axios.post(`http://3.26.59.191:5001/admin/deleteUser`, userData)
+    Axios.post(`https://servicita-back-end-hazel.vercel.app//admin/deleteUser`, userData)
       .then((response) => {
         const db = getFirestore();
         const providerCollection = collection(db, "providers");
@@ -625,7 +625,7 @@ function ProviderList({ searchTerm, sortTerm, category, city, barangay, flagged,
       const userData = {
         email: record.email
       }
-      Axios.patch('http://3.26.59.191:5001/admin/unsuspendUser', userData)
+      Axios.patch('https://servicita-back-end-hazel.vercel.app//admin/unsuspendUser', userData)
         .then((response) => {
           alert('User unsuspended successfully');
           setUnsuspendUser(true);
