@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { FaEllipsisV } from 'react-icons/fa';
 import { Table, Dropdown, Menu, Space, Card, Spin } from 'antd';
-import { getFirestore, collection, getDocs, onSnapshot, doc, deleteDoc, getDoc, updateDoc } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, onSnapshot, doc, deleteDoc, getDoc, setDoc, query, where } from 'firebase/firestore';
 import Axios from 'axios';
 
-function PendingComplaints() {
+function ReportedIssues() {
 	const [loading, setLoading] = useState(false);
 	const [dataSource, setDataSource] = useState([]);
 	const [changes, setChanges] = useState(false);
@@ -18,10 +18,9 @@ function PendingComplaints() {
 			try {
 
 				const response = await Axios.get('http://192.168.1.4:5001/report/getReports');
-				const reportsData = response.data.filter(report => {
-					if (report.reportedId != '1') {
-						return report;
-					}})
+				const reportsData = response.data;
+
+				// console.log(reportsData.reportedId)
 
 				// Initialize array to store report info
 				const reportInfoData = [];
@@ -30,21 +29,22 @@ function PendingComplaints() {
 				for (const report of reportsData) {
 					var reporterDoc, reportedDoc
 
+					console.log(report.reportedId)
+
 					const reporterResponse = await Axios.get(`http://192.168.1.4:5001/admin/getUser/${report.reporterId}`); //for reporter profileImage
-					const reportedResponse = await Axios.get(`http://192.168.1.4:5001/admin/getUser/${report.reportedId}`); //for reported role
+					// const reportedResponse = await Axios.get(`http://192.168.1.4:5001/admin/getUser/${report.reportedId}`); //for reported role
 
 					const db = getFirestore();
 
 					const reporterProfileImage = reporterResponse.data.data.profileImage
-					const reportedRole = reportedResponse.data.data.role
+					const reporterRole = reporterResponse.data.data.role
+					// const reportedId = reportedResponse.data.data.reportedId
 
-					if (reportedRole == 'Provider') {
+					if (reporterRole == 'Seeker') {
 						reporterDoc = await getDoc(doc(db, 'seekers', report.reporterId));
-						reportedDoc = await getDoc(doc(db, 'providers', report.reportedId));
 					}
 					else {
 						reporterDoc = await getDoc(doc(db, 'providers', report.reporterId));
-						reportedDoc = await getDoc(doc(db, 'seekers', report.reportedId));
 					}
 
 					// reporterDoc = await getDoc(doc(db, 'seekers', report.reporterId));
@@ -54,7 +54,7 @@ function PendingComplaints() {
 					// console.log(reportedRole)
 
 					const reporterData = reporterDoc.data();
-					const reportedData = reportedDoc.data();
+					// const reportedData = reportedDoc.data();
 
 					// console.log(reporterData)
 					// console.log(reportedData)
@@ -66,8 +66,8 @@ function PendingComplaints() {
 						reporterName: `${reporterData.name.firstName} ${reporterData.name.lastName}`,
 						reporterProfileImage: reporterProfileImage,
 						reportedId: report.reportedId,
-						reportedName: `${reportedData.name.firstName} ${reportedData.name.lastName}`,
-						reportedRole: reportedRole,
+						// reportedName: `${reportedData.name.firstName} ${reportedData.name.lastName}`,
+						// reportedRole: reportedRole,
 						reason: report.reason,
 						createdAt: new Date(report.createdAt), // Assuming createdAt is already a Date in MongoDB
 						status: report.status
@@ -101,7 +101,7 @@ function PendingComplaints() {
 
 
 	const filterByStatus = dataSource.filter((report => {
-		if (report.status == 'PENDING') {
+		if (report.reportedId == 1) {
 			return report;
 		}
 	}))
@@ -154,6 +154,59 @@ function PendingComplaints() {
 		}
 	}
 
+	const handleMessage = async (record) => {
+		const adminId = localStorage.getItem('adminId');
+			const userId = record.reporterId;
+			const chatId = `${adminId}_${userId}`;
+		
+		const messageData = {
+			users: [localStorage.getItem('adminId'), record.reporterId],
+			usersFullName: { admin: localStorage.getItem('adminName'), user: record.reporterName },
+			usersImage: { admin: 'https://firebasestorage.googleapis.com/v0/b/servicita-signin-fa66f.appspot.com/o/CMSC%20128%201.png?alt=media&token=84ee6b35-73ff-4667-9720-53f2a40490a3', user: record.reporterProfileImage },
+			usersId: { admin: localStorage.getItem('adminId'), user: record.reporterId},
+			lastMessage: '',
+			lastSeen: { admin: true, user: false },
+			createdAt: new Date(),
+			lastMessageTime: new Date(),
+			messages: [
+				{
+					text: `Hello ${record.reporterName},\n\nThank you for bringing this issue to our attention. We have received your report regarding the following issue:\n\n"${record.reason}"\n\nOur team is currently reviewing the details and will take appropriate action. If we need any additional information, we will contact you at the email address you provided.\n\nPlease note that we take all reports seriously and strive to address issues as promptly as possible. We appreciate your patience during this review process.\n\nIf you have any further questions or additional information to provide, please feel free to reply to this message or contact our support team directly.\n\nThank you for helping us maintain a safe and respectful community.\n\nSincerely,\n\nThe Support Team`,
+					createdAt: new Date(),
+					_id: `${chatId}_${new Date().getTime()}_${adminId}`,
+					user: { _id: adminId }
+				}
+
+			]
+		}
+
+		try {
+			setShowSpinner(true);
+			
+			const db = getFirestore();
+			const chatRef = collection(db, 'adminChats');
+			const q = query(chatRef, where('users', 'array-contains', adminId));
+			const querySnapshot = await getDocs(q);
+
+			const chatExists = querySnapshot.docs.some(doc => {
+			const chatData = doc.data();
+			return chatData.users.includes(userId);
+			});
+			if (chatExists) {
+				alert('Chat already exists');
+			} else {				
+				const chatDocRef = doc(db, 'adminChats', chatId);
+				await setDoc(chatDocRef, messageData);
+				alert('Chat created successfully, you can now message the user');
+			}
+
+		} catch (error) {
+			console.error("Error:", error)
+		
+		} finally {
+			setShowSpinner(false);
+		}
+	}
+
 	const renderActions = (record) => {
 		if (!record) {
 		  return null;
@@ -164,7 +217,7 @@ function PendingComplaints() {
 			overlay={
 			  <Menu>
 				<Menu.Item key="delete" onClick={() => handleIgnore(record)}>Ignore</Menu.Item>
-                <Menu.Item key="delete" onClick={() => handleTakeAction(record)}>Take Action</Menu.Item>
+                <Menu.Item key="delete" onClick={() => handleMessage(record)}>Message</Menu.Item>
 				{/* <Menu.SubMenu title="Resolve">
 				  <Menu.Item key="5_hours" onClick={() => handleSubMenuClick(record, 5)}>5 hours</Menu.Item>
 				  <Menu.Item key="1_day" onClick={() => handleSubMenuClick(record, 24)}>1 day</Menu.Item>
@@ -215,7 +268,7 @@ function PendingComplaints() {
 	return (
 		<div className='reviewComplaints1'>
 		  <div>
-			<h1 className='DashboardHeader'>Pending Complaints</h1>
+			<h1 className='DashboardHeader'>Issues to Review</h1>
 		  </div>
 		  <div className='message-container'>
 			{showSpinner ? (
@@ -224,7 +277,7 @@ function PendingComplaints() {
 			  </div>
 			) : (
 			  filterByStatus.length === 0 ? (
-				<div style={{padding: '10px 0px 0px 10px'}} >No current Pending Complaints to review</div>
+				<div style={{padding: '10px 0px 0px 10px'}} >No current Issues to review</div>
 			  ) : (
 				<div className='complaints-scroller1'>
 				  {changes ? (
@@ -234,13 +287,13 @@ function PendingComplaints() {
 				  ) : (
 					<>
 					  <div className='complaintsCount1' style={{padding: '10px 0px 0px 10px'}}>
-						Pending Complaints to Review: {filterByStatus.length}
+						Issues to Review: {filterByStatus.length}
 					  </div>
 					  <div className='reviewComplaintsRender1'>
 						{filterByStatus.map((reportInfoData) => (
-						  <div key={reportInfoData.id} className='complaintsCard1'>
-							<div className='complaintsCardContent1'>
-							  <div style={{ padding: '20px' }}>
+						  <div key={reportInfoData.id} className='complaintsCard1' style={{}}>
+							<div className='complaintsCardContent1' style={{}}>
+							  <div style={{ padding: '20px',}}>
 								<div className='complaintsHeader1'>
 								  <div className='complaintsLeft1'>
 									<div className='serviceprovider1' style={{ display: 'flex', alignItems: 'center'}}>
@@ -255,12 +308,12 @@ function PendingComplaints() {
 									{renderActions(reportInfoData)}
 								  </div>
 								</div>
-								<div className='complaintReason1' style={{margin: 10, fontSize: 14, textAlign: 'justify', maxHeight: 150, overflowY: 'auto', width: 'auto'}}>{reportInfoData.reason}</div>
-								<div className='bottom-part2' style={{display: 'flex', justifyContent: 'flex-end', gap: 5, fontSize: 12, marginTop: 25}}>
+								<div className='complaintReason1' style={{margin: "20px 10px 10px 20px", fontSize: 14, textAlign: 'justify', maxHeight: 150, overflowY: 'auto', }}>{reportInfoData.reason}</div>
+								{/* <div className='bottom-part2' style={{display: 'flex', justifyContent: 'flex-end', gap: 5, fontSize: 12, marginTop: 25}}>
 								  <div className='reported-user-label1'>Reported User: </div>
 								  <div className='reported-user-role1'>({reportInfoData.reportedRole})</div>
 								  <div className='reported-user-name1'>{reportInfoData.reportedName}</div>
-								</div>
+								</div> */}
 							  </div>
 							</div>
 						  </div>
@@ -278,6 +331,6 @@ function PendingComplaints() {
 	  
 
 }
-export default PendingComplaints
+export default ReportedIssues
 
 

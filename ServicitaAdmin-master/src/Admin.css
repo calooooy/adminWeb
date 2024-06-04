@@ -1397,6 +1397,9 @@ label {
 
 /* Add this to your CSS file or within a <style> tag */
 .reviewComplaints1 {
+  /* width: 100%;
+  padding: 20px;
+  box-sizing: border-box; */
 }
 
 .reviewComplaintsRender1 {
@@ -1412,14 +1415,18 @@ label {
   border: 2px solid #002F45;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  overflow: hidden; 
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .complaintsCardContent1 {
   /* padding: 20px; */
+  width: 100%
 }
 
 .complaints-scroller1 {
+  width: 100%;
   overflow-y: auto;
 }
 

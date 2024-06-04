@@ -19,7 +19,10 @@ function InProgressComplaints() {
 			try {
 
 				const response = await Axios.get('http://192.168.1.4:5001/report/getReports');
-				const reportsData = response.data;
+				const reportsData = response.data.filter(report => {
+					if (report.reportedId != '1') {
+						return report;
+					}})
 
 				// Initialize array to store report info
 				const reportInfoData = [];

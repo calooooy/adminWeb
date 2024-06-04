@@ -4,6 +4,7 @@ import Dashboard from "../../Pages/Dashboard/dashboard";
 import Message from "../../Pages/Message/message";
 import ViewServiceSeekerList from "../../Pages/UserManagement/ViewServiceSeekerList/serviceSeekerList";
 import ViewServiceProviderList from "../../Pages/UserManagement/ViewServiceProviderList/serviceProviderList";
+import ReportedIssues from "../../Pages/UserManagement/Reported Issues/reportedIssues";
 import PerformanceMonitoring from "../../Pages/ServiceProviderPerformance/PerfromanceMonitoring/PerformanceMonitoring";
 import RatingsAndReviews from "../../Pages/ContentModeration/RatingsandReviews/ratingsAndReviews";
 import NewServiceListings from "../../Pages/ContentModeration/NewServiceListings/newServiceListings";
@@ -24,6 +25,7 @@ function AdminRoutes() {
                 {/* <Route path="/message" element={<Message />} ></Route> */}
                 <Route path="/viewSeekerList" element={<ViewServiceSeekerList />} ></Route>
                 <Route path="/viewProviderList" element={<ViewServiceProviderList />} ></Route>
+                <Route path="/viewReportedIssues" element={<ReportedIssues />} ></Route>
                 <Route path="/performanceMonitoring" element={<PerformanceMonitoring />} ></Route>
                 <Route path="/newServiceListing" element={<NewServiceListings />} ></Route>
                 <Route path="/ratingsAndReviews" element={<RatingsAndReviews />} ></Route>

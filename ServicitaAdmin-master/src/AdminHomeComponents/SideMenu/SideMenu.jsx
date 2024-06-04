@@ -42,7 +42,8 @@ function SideMenu() {
         {
           label: "User Management", icon: <UserOutlined style={{ fontSize: '20px' }} />, key: "/home/userManagement", children: [
             { label: "View Service Seeker List", icon: <TeamOutlined style={{ fontSize: '20px' }} />, key: "/home/viewSeekerList" },
-            { label: "View Service Provider List", icon: <UsergroupDeleteOutlined style={{ fontSize: '20px' }} />, key: "/home/viewProviderList" }
+            { label: "View Service Provider List", icon: <UsergroupDeleteOutlined style={{ fontSize: '20px' }} />, key: "/home/viewProviderList" },
+            { label: "View Reported Issues", icon: <UsergroupDeleteOutlined style={{ fontSize: '20px' }} />, key: "/home/viewReportedIssues" }
           ]
         },
         // {
