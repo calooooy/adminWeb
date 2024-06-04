@@ -17,7 +17,7 @@ function PendingIssues() {
 		const fetchReports = async () => {
 			try {
 
-				const response = await Axios.get('https://172.16.4.26:5001/report/getReports');
+				const response = await Axios.get('https://172.16.4.26:/report/getReports');
 				const reportsData = response.data.filter(report => {
 					if (report.reportedId == '1') {
 						return report;
@@ -34,8 +34,8 @@ function PendingIssues() {
 
 					console.log(report.reportedId)
 
-					const reporterResponse = await Axios.get(`https://172.16.4.26:5001/admin/getUser/${report.reporterId}`); //for reporter profileImage
-					// const reportedResponse = await Axios.get(`https://172.16.4.26:5001/admin/getUser/${report.reportedId}`); //for reported role
+					const reporterResponse = await Axios.get(`https://172.16.4.26:/admin/getUser/${report.reporterId}`); //for reporter profileImage
+					// const reportedResponse = await Axios.get(`https://172.16.4.26:/admin/getUser/${report.reportedId}`); //for reported role
 
 					const db = getFirestore();
 
@@ -122,7 +122,7 @@ function PendingIssues() {
 		setUpdating(true)
 
 		try{
-			await Axios.delete(`https://172.16.4.26:5001/report/deleteReport/${record.id}`)
+			await Axios.delete(`https://172.16.4.26:/report/deleteReport/${record.id}`)
 			setChanges(true)
 			setLoading(true)
 		} catch (error) {
@@ -143,7 +143,7 @@ function PendingIssues() {
 		setUpdating(true)
 
 		try{
-            await Axios.put(`https://172.16.4.26:5001/report/updateReport/${record.id}`, {
+            await Axios.put(`https://172.16.4.26:/report/updateReport/${record.id}`, {
                 status: 'IN PROGRESS'
               });
 			setChanges(true)
@@ -245,7 +245,7 @@ function PendingIssues() {
 			userId: record.reportedId,
 			action: action
 		  }
-		  Axios.patch('https://172.16.4.26:5001/admin/suspendUser', userData)
+		  Axios.patch('https://172.16.4.26:/admin/suspendUser', userData)
 			.then((response) => {
 			  alert('User suspended successfully');
 			}

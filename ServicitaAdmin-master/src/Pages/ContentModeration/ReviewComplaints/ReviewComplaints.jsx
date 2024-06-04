@@ -17,7 +17,7 @@ function ResolvedComplaints() {
 		const fetchReports = async () => {
 			try {
 
-				const response = await Axios.get('https://172.16.4.26:5001/report/getReports');
+				const response = await Axios.get('https://172.16.4.26:/report/getReports');
 				const reportsData = response.data;
 
 				// Initialize array to store report info
@@ -27,8 +27,8 @@ function ResolvedComplaints() {
 				for (const report of reportsData) {
 					var reporterDoc, reportedDoc
 
-					const reporterResponse = await Axios.get(`https://172.16.4.26:5001/admin/getUser/${report.reporterId}`); //for reporter profileImage
-					const reportedResponse = await Axios.get(`https://172.16.4.26:5001/admin/getUser/${report.reportedId}`); //for reported role
+					const reporterResponse = await Axios.get(`https://172.16.4.26:/admin/getUser/${report.reporterId}`); //for reporter profileImage
+					const reportedResponse = await Axios.get(`https://172.16.4.26:/admin/getUser/${report.reportedId}`); //for reported role
 
 
 
@@ -118,7 +118,7 @@ function ResolvedComplaints() {
 		setUpdating(true)
 
 		try{
-			await Axios.delete(`https://172.16.4.26:5001/report/deleteReport/${record.id}`)
+			await Axios.delete(`https://172.16.4.26:/report/deleteReport/${record.id}`)
 			setChanges(true)
 			setLoading(true)
 		} catch (error) {
@@ -185,7 +185,7 @@ function ResolvedComplaints() {
 			userId: record.reportedId,
 			action: action
 		  }
-		  Axios.patch('https://172.16.4.26:5001/admin/suspendUser', userData)
+		  Axios.patch('https://172.16.4.26:/admin/suspendUser', userData)
 			.then((response) => {
 			  alert('User suspended successfully');
 			}

@@ -23,13 +23,13 @@ function AdminHeader({ onLogout }) {
                     return;
                 }
 
-                const response = await Axios.get(`https://172.16.4.26:5001/notifications/getNotifications/${userId}`);
+                const response = await Axios.get(`https://172.16.4.26:/notifications/getNotifications/${userId}`);
                 const notificationsData = response.data.data;
 
                 const notificationInfoData = [];
 
                 for (const notification of notificationsData) {
-                    const otherUserResponse = await Axios.get(`https://172.16.4.26:5001/admin/getUser/${notification.otherUserId}`);
+                    const otherUserResponse = await Axios.get(`https://172.16.4.26:/admin/getUser/${notification.otherUserId}`);
                     const otherProfileImage = otherUserResponse.data.data.profileImage;
 
                     notificationInfoData.push({
