@@ -38,7 +38,7 @@ function AdminHome({onLogout}) {
     //             reportsReceived: data.reportsReceived || 0,
     //             violationRecord: data.violationRecord || 0,
     //           };
-    //           const response = await Axios.get(`http://192.168.1.4:5001/admin/getUser/${doc.id}`);
+    //           const response = await Axios.get(`http://3.26.59.191:5001/admin/getUser/${doc.id}`);
     //           const userData = response.data.data;
     //           seekerInfo.profileImage = userData.profileImage;
     //           seekerInfo.email = userData.email;
