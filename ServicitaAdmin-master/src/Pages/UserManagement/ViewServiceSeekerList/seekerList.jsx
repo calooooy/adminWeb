@@ -52,7 +52,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
             reportsReceived: data.reportsReceived || 0,
             violationRecord: data.violationRecord || 0,
           };
-          const response = await Axios.get(`http://3.26.59.191:/admin/getUser/${doc.id}`);
+          const response = await Axios.get(`http://3.26.59.191://admin/getUser/${doc.id}`);
           const userData = response.data.data;
           seekerInfo.profileImage = userData.profileImage;
           seekerInfo.email = userData.email;
@@ -155,7 +155,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
   //         reportsReceived: data.reportsReceived || 0,
   //         violationRecord: data.violationRecord || 0,
   //       };
-  //       const response = await Axios.get(`http://3.26.59.191:/admin/getUser/${doc.id}`);
+  //       const response = await Axios.get(`http://3.26.59.191://admin/getUser/${doc.id}`);
   //       const userData = response.data.data;
   //       updatedUser.profileImage = userData.profileImage;
   //       updatedUser.email = userData.email;
@@ -328,7 +328,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
       if (typeof action !== 'number') {
         throw new Error('Action must be a number');
       }
-      Axios.patch('http://3.26.59.191:/admin/suspendUser', userData)
+      Axios.patch('http://3.26.59.191://admin/suspendUser', userData)
         .then((response) => {
           alert('User suspended successfully');
         }
@@ -353,7 +353,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
 
   const handleDelete = (record) => {
     console.log(record.id)
-    Axios.post(`http://3.26.59.191:/admin/deleteUser`, { userId: record.id })
+    Axios.post(`http://3.26.59.191://admin/deleteUser`, { userId: record.id })
       .then((response) => {
         const db = getFirestore();
         const seekerCollection = collection(db, "seekers");
@@ -378,7 +378,7 @@ function SeekerList({ searchTerm, sortTerm, city, barangay, flagged, onSelectUse
       const userData = {
         email: record.email
       }
-      Axios.patch('http://3.26.59.191:/admin/unsuspendUser', userData)
+      Axios.patch('http://3.26.59.191://admin/unsuspendUser', userData)
         .then((response) => {
           alert('User unsuspended successfully');
           setUnsuspendUser(true);

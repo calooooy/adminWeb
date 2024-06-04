@@ -110,7 +110,7 @@ const SidebarContent = ({ sortBy, onSort, resetFilters, setSelectedLocation1, se
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await Axios.get('http://3.26.59.191:/location/getCities');
+        const response = await Axios.get('http://3.26.59.191://location/getCities');
         setLocations(response.data.data);
       } catch (error) {
         console.error('Error fetching locations:', error);

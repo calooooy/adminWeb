@@ -17,7 +17,7 @@ function ResolvedIssues() {
 		const fetchReports = async () => {
 			try {
 
-				const response = await Axios.get('http://3.26.59.191:/report/getReports');
+				const response = await Axios.get('http://3.26.59.191://report/getReports');
 				const reportsData = response.data.filter(report => {
 					if (report.reportedId == '1') {
 						return report;
@@ -34,8 +34,8 @@ function ResolvedIssues() {
 
 					console.log(report.reportedId)
 
-					const reporterResponse = await Axios.get(`http://3.26.59.191:/admin/getUser/${report.reporterId}`); //for reporter profileImage
-					// const reportedResponse = await Axios.get(`http://3.26.59.191:/admin/getUser/${report.reportedId}`); //for reported role
+					const reporterResponse = await Axios.get(`http://3.26.59.191://admin/getUser/${report.reporterId}`); //for reporter profileImage
+					// const reportedResponse = await Axios.get(`http://3.26.59.191://admin/getUser/${report.reportedId}`); //for reported role
 
 					const db = getFirestore();
 
@@ -122,7 +122,7 @@ function ResolvedIssues() {
 		setUpdating(true)
 
 		try{
-			await Axios.delete(`http://3.26.59.191:/report/deleteReport/${record.id}`)
+			await Axios.delete(`http://3.26.59.191://report/deleteReport/${record.id}`)
 			setChanges(true)
 			setLoading(true)
 		} catch (error) {
@@ -143,7 +143,7 @@ function ResolvedIssues() {
 		setUpdating(true)
 
 		try{
-            await Axios.put(`http://3.26.59.191:/report/updateReport/${record.id}`, {
+            await Axios.put(`http://3.26.59.191://report/updateReport/${record.id}`, {
                 status: 'IN PROGRESS'
               });
 			setChanges(true)
@@ -245,7 +245,7 @@ function ResolvedIssues() {
 			userId: record.reportedId,
 			action: action
 		  }
-		  Axios.patch('http://3.26.59.191:/admin/suspendUser', userData)
+		  Axios.patch('http://3.26.59.191://admin/suspendUser', userData)
 			.then((response) => {
 			  alert('User suspended successfully');
 			}

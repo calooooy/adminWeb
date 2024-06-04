@@ -36,7 +36,7 @@ function NewServiceListings() {
 						verified: data.verified,
 						status: data.status
 					};
-					const response = await Axios.get(`http://3.26.59.191:/admin/getUser/${data.providerId}`);
+					const response = await Axios.get(`http://3.26.59.191://admin/getUser/${data.providerId}`);
 					const userData = response.data.data;
 					servicesInfo.profileImage = userData.profileImage;
 
