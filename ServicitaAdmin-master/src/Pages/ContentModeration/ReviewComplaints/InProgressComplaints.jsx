@@ -246,7 +246,7 @@ function InProgressComplaints() {
 		  const userData = {
 			email: record.reporterEmail
 		  }
-		  Axios.patch('http://:5001/admin/unsuspendUser', userData)
+		  Axios.patch('https://servicita-back-end-hazel.vercel.app/admin/unsuspendUser', userData)
 			.then((response) => {
 			  alert('User unsuspended successfully');
 			  setUnsuspendUser(true);
