@@ -319,10 +319,10 @@ function InProgressComplaints() {
                     </Menu.SubMenu>
 			
                     <Menu.SubMenu key="suspend_reported" title="Reported">
-					{record.reportedSuspended === true ? <Menu.Item key="unsuspend" onClick={() => handleUnsuspendReported(record)}>Unsuspend</Menu.Item> : <Menu.SubMenu title="Suspend">
-                        	<Menu.Item key="reporter_5_hours" onClick={() => handleSubMenuClick(record, 5, 'reporter')}>5 hours</Menu.Item>
-                        	<Menu.Item key="reporter_1_day" onClick={() => handleSubMenuClick(record, 24, 'reporter')}>1 day</Menu.Item>
-                        	<Menu.Item key="reporter_1_week" onClick={() => handleSubMenuClick(record, 168, 'reporter')}>1 week</Menu.Item>
+						{record.reportedSuspended === true ? <Menu.Item key="unsuspend" onClick={() => handleUnsuspendReported(record)}>Unsuspend</Menu.Item> : <Menu.SubMenu title="Suspend">
+                        	<Menu.Item key="reported_5_hours" onClick={() => handleSubMenuClick(record, 5, 'reported')}>5 hours</Menu.Item>
+                        	<Menu.Item key="reported_1_day" onClick={() => handleSubMenuClick(record, 24, 'reported')}>1 day</Menu.Item>
+                        	<Menu.Item key="reported_1_week" onClick={() => handleSubMenuClick(record, 168, 'reported')}>1 week</Menu.Item>
 						</Menu.SubMenu>
 			}
                     </Menu.SubMenu>
